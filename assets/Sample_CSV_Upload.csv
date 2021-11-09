@@ -1,0 +1,10 @@
+Member Name,Room Number,Floor Number,Building Number,Device MAC ID,Event ID,Status
+Test 01,A01,FN01,BN01,00:1B:44:11:3A:A1,1,Active
+Test 02,A02,FN02,BN02,00:1B:44:11:3A:A2,2,Active
+Test 03,A03,FN03,BN03,00:1B:44:11:3A:A3,3,Active
+Test 04,A04,FN04,BN04,00:1B:44:11:3A:A4,4,Active
+Test 05,A05,FN05,BN05,00:1B:44:11:3A:A5,5,Active
+Test 06,A06,FN06,BN06,00:1B:44:11:3A:A6,6,Active
+Test 07,A07,FN07,BN07,00:1B:44:11:3A:A7,7,Active
+Test 08,A08,FN08,BN08,00:1B:44:11:3A:A8,8,Active
+Test 09,A09,FN09,BN09,00:1B:44:11:3A:A9,9,Active
