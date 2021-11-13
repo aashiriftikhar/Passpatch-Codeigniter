@@ -27,9 +27,9 @@ $baseURL = (isset($_SERVER["HTTPS"]) ? "https://" : "http://").$_SERVER["HTTP_HO
 $baseURL .= str_replace(basename($_SERVER["SCRIPT_NAME"]), "", $_SERVER["SCRIPT_NAME"]);
 
 // $config['base_url'] 	= 'http://localhost/pass/';
-$config['base_url'] 	= 'http://'. $_SERVER['HTTP_HOST'] .'/aashir/';
-$config['public_url'] 	= 'http://'. $_SERVER['HTTP_HOST'] .'/aashir/'.'assets/';
-$config['upload_url'] 	= 'http://'. $_SERVER['HTTP_HOST'] .'/aashir/'.'uploads/';
+$config['base_url'] 	= 'http://'. $_SERVER['HTTP_HOST'];
+$config['public_url'] 	= 'http://'. $_SERVER['HTTP_HOST'].'assets/';
+$config['upload_url'] 	= 'http://'. $_SERVER['HTTP_HOST'].'uploads/';
 /*
 |--------------------------------------------------------------------------
 | Index File
