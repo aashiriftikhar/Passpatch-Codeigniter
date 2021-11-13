@@ -82,7 +82,7 @@
 					<a href="<?php echo $listURL; ?>" class="btn btn-success btn-modify pull-right"><i class="fa fa-arrow-left"></i> Back</a>
 
 				</div>
-				<a href="<?php echo $sampleFileDownload; ?>" class="label label-primary pull-right" >Download MAC ID Sample File</a>
+				<!-- <a href="<?php echo $sampleFileDownload; ?>" class="label label-primary pull-right" >Download MAC ID Sample File</a> -->
 				<!-- form start -->
 				<form name="addClient" method="post" action="" enctype="multipart/form-data" id="addClient">
 		          <div class="box-body">
@@ -99,28 +99,29 @@
 		                  <label for="name">Customer Type </label>
 		                  <select class="form-control" name="customer_type">
 		                    <option value="">Select</option>
-		                    <?php foreach ($CustomerTypeData as $key => $value) { ?>
+		                    <?php foreach ($CustomerTypeData as $key => $value)  ?>
 		                      
 		                    <option <?php if(!empty($ClientData['customer_type'])){ echo ($ClientData['customer_type']==$value['id'])? "selected": ""; } ?> value="<?= $value['id']?>"><?= $value['name']?></option>
 
-		                    <? } ?>
+		                    <?  ?>
 		                    
 		                  </select>
 		                  <?php echo form_error('customer_type','<p class="help-block error">','</p>'); ?>
 		                </div>
 		              </div>
-		              <div class="col-md-4">
+		              <!-- <div class="col-md-4">
 		                <div class="form-group">
 		                  <label></label>
 		                  <input type="file" name="mac_id_file" id="file" class="input-file" accept=".xls">
 		                  <label for="file" class="btn btn-tertiary js-labelFile">
 		                  <i class="icon fa fa-check"></i>
 		                  <span class="js-fileName"></span>
-		                  </label>
-		                  <label style="margin-top: 5px">Upload ASCII file serial number  or MAC ID</label>
+		                  </label> -->
+		                  <!-- <label style="margin-top: 5px">Upload ASCII file serial number  or MAC ID</label>
 		                  <?php  if(!empty($mac_id_file_error)){
 		                  echo '<div class="help-block error">'.$mac_id_file_error.'</div>'; }?>
-		                  <?php echo form_error('mac_id_file','<p class="help-block error">','</p>'); ?>
+		                  <?php echo form_error('mac_id_file','<p class="help-block error">','</p>'); ?> -->
+						  
 		                </div>
 		              </div>
 		            </div>
@@ -231,6 +232,28 @@
 		                </div>
 		              </div>
 		            </div>
+		            <div class="row">
+					<div class="col-md-4">
+		                <div class="form-group">
+						  
+						  <div style="height:120px;width:320px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+ 								<?php if (isset($allDevices))
+										foreach ($allDevices as $service) : ?>
+ 									<input type="checkbox" value="'.$row['id'].'" name="service[]">
+ 									<?php echo $service->id."-".$service->device_id; ?>
+										</br>
+ 								<?php endforeach; ?>
+										 </div>
+		                </div>
+		              </div>
+					  <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="contact_title">Enter number of devices</label>
+		                  <input min="1" max="100" type="number" class="form-control" name="device_count" placeholder="Device Count to Assign" value="<?php echo !empty($ClientData['device_count'])?$ClientData['device_count']:''; ?>" >
+		                  <?php echo form_error('contact_title','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+					</div>
 		            <div class="row">
 		              <div class="col-md-12">
 		                <hr style="border-top: 2px dotted #1c1a1a47;">

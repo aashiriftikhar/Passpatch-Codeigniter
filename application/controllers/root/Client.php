@@ -23,6 +23,8 @@ class Client extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->library('pagination');
 
+        $this->load->model("Settings");
+
         
 		
         $this->layout = 'root/layout';
@@ -156,6 +158,7 @@ class Client extends CI_Controller {
             $this->form_validation->set_rules('contact_title', 'Contact Title', 'required|trim');            
             $this->form_validation->set_rules('notes', 'Notes', 'trim');            
             $this->form_validation->set_rules('status', 'Status', 'required|trim');
+            $this->form_validation->set_rules('device_count', 'Device Count to Assign', 'required|trim');  
             
             $post =  $this->security->xss_clean($this->input->post());  
 
@@ -196,40 +199,63 @@ class Client extends CI_Controller {
                     );
                     $this->load->library('upload', $config);
 
-                    if ($this->upload->do_upload('mac_id_file')) {
-                        $data = $this->upload->data();
-                        @chmod($data['full_path'], 0777);
+                    $getDevice = $this->ClientModel->getDevices($post['device_count']);
+                    $data_toInsert = array();
+                    $arrCount = 0;
+                    $idArr=array();
+                    foreach($getDevice as $device){
+                                $data_toInsert[$arrCount]['device_id']    = $device->device_id;              
+                                $data_toInsert[$arrCount]['client_id']    = $insert_ID;
+                                $data_toInsert[$arrCount]['created_at']    = date("Y-m-d H:i:s");
+                                $idArr[$arrCount] = $device->id;
+                                $arrCount=$arrCount+1;
+                    }
 
-                        $this->load->library('Spreadsheet_Excel_Reader');
-                        $this->spreadsheet_excel_reader->setOutputEncoding('CP125');
-
-                        $this->spreadsheet_excel_reader->read($data['full_path']);
-                        $sheets = $this->spreadsheet_excel_reader->sheets[0];
-                        // error_reporting(0);
-
-                        $data_excel = array();
-                        for ($i = 1; $i <= $sheets['numRows']; $i++) {
-                            if ($sheets['cells'][$i][1] == '') break;
-
-                            $data_excel[$i - 1]['device_id']    = $sheets['cells'][$i][1];              
-                            $data_excel[$i - 1]['client_id']    = $insert_ID;
-
-                            $data_excel[$i - 1]['created_at']    = date("Y-m-d H:i:s");                                          
-                        }
-
-                        $insert = $this->db->insert_batch('tbl_devices', $data_excel);
+                    $insert = $this->db->insert_batch('tbl_devices', $data_toInsert);
+                    $this->ClientModel->updateDeviceStatus($idArr);
                         
                         if ($insert){
-                            $total_devices = array('total_devices' =>count($data_excel) );
+                            $total_devices = array('total_devices' =>count($data_toInsert) );
                             $this->ClientModel->update($total_devices, array('id'=>$insert_ID));
                             @unlink($data['full_path']);
                         }else{
                             $data['error_msg'] = 'Some problems occured, please try again.';
                         }
 
-                    }elseif (!empty($_FILES['file']['name']) && $this->upload->display_errors()) {
-                            $data['mac_id_file_error'] = $this->upload->display_errors();
-                    }
+                    // if ($this->upload->do_upload('mac_id_file')) {
+                    //     $data = $this->upload->data();
+                    //     @chmod($data['full_path'], 0777);
+
+                    //     $this->load->library('Spreadsheet_Excel_Reader');
+                    //     $this->spreadsheet_excel_reader->setOutputEncoding('CP125');
+
+                    //     $this->spreadsheet_excel_reader->read($data['full_path']);
+                    //     $sheets = $this->spreadsheet_excel_reader->sheets[0];
+                    //     // error_reporting(0);
+
+                    //     $data_excel = array();
+                    //     for ($i = 1; $i <= $sheets['numRows']; $i++) {
+                    //         if ($sheets['cells'][$i][1] == '') break;
+
+                    //         $data_excel[$i - 1]['device_id']    = $sheets['cells'][$i][1];              
+                    //         $data_excel[$i - 1]['client_id']    = $insert_ID;
+
+                    //         $data_excel[$i - 1]['created_at']    = date("Y-m-d H:i:s");                                          
+                    //     }
+
+                    //     $insert = $this->db->insert_batch('tbl_devices', $data_excel);
+                        
+                    //     if ($insert){
+                    //         $total_devices = array('total_devices' =>count($data_excel) );
+                    //         $this->ClientModel->update($total_devices, array('id'=>$insert_ID));
+                    //         @unlink($data['full_path']);
+                    //     }else{
+                    //         $data['error_msg'] = 'Some problems occured, please try again.';
+                    //     }
+
+                    // }elseif (!empty($_FILES['file']['name']) && $this->upload->display_errors()) {
+                    //         $data['mac_id_file_error'] = $this->upload->display_errors();
+                    // }
 
                     $to = $ClientData['email'];
                     $subject = 'Account Password';
@@ -278,6 +304,7 @@ class Client extends CI_Controller {
         $data['listURL'] = base_url().$this->controller;
         $data['action'] = 'Add';
         $data['action_btn'] = 'Create';
+        $data['allDevices'] = $this->Settings->getAllDevices();
         //load the view
         $this->data['maincontent'] = $this->load->view('root/client/add-edit-client', $data, true);   
         $this->load->view($this->layout, $this->data);     
@@ -296,7 +323,8 @@ class Client extends CI_Controller {
 
             //form field validation rules            
             $this->form_validation->set_rules('profile_name', 'Profile Name', 'required|trim');
-            $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|trim');            
+            $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|trim'); 
+            $this->form_validation->set_rules('device_count', 'Device Count to Assign', 'required|trim');            
             $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|callback_email_check[' . $id . ']');
             $this->form_validation->set_rules('customer_type', 'Customer Type', 'required|trim');
             $this->form_validation->set_rules('country', 'Country', 'required|trim');            
@@ -431,6 +459,8 @@ class Client extends CI_Controller {
         // $data['listURL'] = base_url().$this->controller;
         $data['action'] = 'Edit';
         $data['action_btn'] = 'Update';
+
+        $data['allDevices'] = $this->ClientModel->getClientDevices($id);
         //load the view
         $this->data['maincontent'] = $this->load->view('root/client/add-edit-client', $data, true);   
         $this->load->view($this->layout, $this->data);     

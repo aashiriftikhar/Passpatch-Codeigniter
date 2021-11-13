@@ -46,10 +46,11 @@ class SettingsRoot extends CI_Controller
     {
 
         if ( isset($_POST['addDevice'])) {
+            log_message('debug','zaleel');
 
             $config = array(
                 'upload_path' => 'uploads/',
-                'allowed_types' => 'xls|xlsx'
+                'allowed_types' => 'xls'
             );
             $this->load->library('upload', $config);
 
@@ -59,13 +60,13 @@ class SettingsRoot extends CI_Controller
 
                 $this->load->library('Spreadsheet_Excel_Reader');
                 $this->spreadsheet_excel_reader->setOutputEncoding('CP125');
-
                 $this->spreadsheet_excel_reader->read($data['full_path']);
                 $sheets = $this->spreadsheet_excel_reader->sheets[0];
                 // error_reporting(0);
                 $data_excel = array();
                 for ($i = 2; $i <= $sheets['numRows']; $i++) {
                     if ($sheets['cells'][$i][1] == '') break;
+                    echo '<pre>';print_r($sheets['cells'][$i][1]);
                     $data_excel[$i - 1]['device_id'] = $sheets['cells'][$i][1];
                 }
                 $insert = $this->db->insert_batch('tbl_inventory', $data_excel);

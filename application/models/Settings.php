@@ -19,7 +19,7 @@ class Settings extends CI_Model{
 
 	function getDeviceCount(){
 		$this->db->from("tbl_inventory");
-		$this->db->where('avaibility_status','available');
+		$this->db->where('assigned','no');
 		return $this->db->count_all_results();
 
 	}

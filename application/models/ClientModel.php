@@ -15,6 +15,29 @@ class ClientModel extends CI_Model{
 		}
 	}
 
+	public function getDevices($count){
+		echo $count;
+		$this->db->from("tbl_inventory");
+		$this->db->where('assigned','no');
+		$this->db->limit($count);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function updateDeviceStatus($idArr){
+		$this->db->from("tbl_inventory");
+		$this->db->where_in("id", $idArr);
+		$data = array(
+			'assigned' => 'yes');
+		$this->db->update('tbl_inventory', $data);
+	}
+
+	public function getClientDevices($id){
+		$this->db->from("tbl_devices");
+		$this->db->where("client_id",$id);
+		$query = $this->db->get();
+		return $query->result();
+	}
 
 	/* Get rows from the admin users table */
 	public function getRows($params = array()){
