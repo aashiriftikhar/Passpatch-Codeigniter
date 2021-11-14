@@ -45,7 +45,7 @@
 
  											<?php } ?>
  											<label style="margin-top: 5px">Upload ASCII file serial number or MAC ID</label>
- 											<input type="file" name="mac_id_file" id="file" class="input-file" accept=".xls,.xlsx">
+ 											<input type="file" name="mac_id_file" id="file" class="input-file" accept=".xls">
  											<label for="file" class="btn btn-tertiary js-labelFile">
  												<!--<i class="icon fa fa-check"></i>-->
  												<span class="js-fileName"></span>
@@ -63,81 +63,21 @@
  								<hr>
  								<div class="col-md-12">
  									<div class="form-group">
- 										<label for="name">Select Devices </label>
+ 										<label for="name">Available Devices </label>
+
  										<div class="row">
 										 <div style="height:120px;width:320px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
  								<?php if (isset($allDevices))
 										foreach ($allDevices as $service) : ?>
- 									<input type="checkbox" value="'.$row['id'].'" name="service[]">
- 									<?php echo $service->id."-".$service->device_id; ?>
+ 									<!-- <input type="checkbox" value="'.$service->id.'" name="services[]">
+ 									<?php echo $service->id."-".$service->device_id; ?> -->
+
+      <input type="checkbox" name="mycheck[]" value="<?php echo $service->id; ?>">
+	  <?php echo $service->id."-".$service->device_id; ?>
 										</br>
  								<?php endforeach; ?>
 										 </div>
- 												<!-- <label for="name">From # </label>
- 												<select class="form-control">
- 													<option>Please select</option>
- 													<option>00:1B:44:11:3A:B0</option>
- 													<option>00:1B:44:11:3A:B1</option>
- 													<option>00:1B:44:11:3A:B2</option>
- 													<option>00:1B:44:11:3A:B3</option>
- 													<option>00:1B:44:11:3A:B4</option>
- 													<option>00:1B:44:11:3A:B5</option>
- 													<option>00:1B:44:11:3A:B6</option>
- 													<option>00:1B:44:11:3A:B7</option>
- 													<option>00:1B:44:11:3A:B8</option>
- 													<option>00:1B:44:11:3A:B9</option>
- 													<option>00:1B:44:11:3A:C0</option>
- 													<option>00:1B:44:11:3A:C1</option>
- 													<option>00:1B:44:11:3A:C2</option>
- 													<option>00:1B:44:11:3A:C3</option>
- 													<option>00:1B:44:11:3A:C4</option>
- 													<option>00:1B:44:11:3A:C5</option>
- 													<option>00:1B:44:11:3A:C6</option>
- 													<option>00:1B:44:11:3A:C7</option>
- 													<option>00:1B:44:11:3A:C8</option>
- 													<option>00:1B:44:11:3A:C9</option>
- 													<option>00:1B:44:11:3A:D0</option>
- 													<option>00:1B:44:11:3A:D1</option>
- 													<option>00:1B:44:11:3A:D2</option>
- 													<option>00:1B:44:11:3A:D3</option>
- 													<option>00:1B:44:11:3A:D4</option>
- 													<option>DD:35:00:02:B8:E2</option>
- 													<option>DD:35:00:02:BA:60</option>
- 												</select> -->
  											</div>
- 											<!-- <div class="col-md-6">
- 												<label for="name">To # </label>
- 												<select class="form-control">
- 													<option>Please select</option>
- 													<option>00:1B:44:11:3A:B0</option>
- 													<option>00:1B:44:11:3A:B1</option>
- 													<option>00:1B:44:11:3A:B2</option>
- 													<option>00:1B:44:11:3A:B3</option>
- 													<option>00:1B:44:11:3A:B4</option>
- 													<option>00:1B:44:11:3A:B5</option>
- 													<option>00:1B:44:11:3A:B6</option>
- 													<option>00:1B:44:11:3A:B7</option>
- 													<option>00:1B:44:11:3A:B8</option>
- 													<option>00:1B:44:11:3A:B9</option>
- 													<option>00:1B:44:11:3A:C0</option>
- 													<option>00:1B:44:11:3A:C1</option>
- 													<option>00:1B:44:11:3A:C2</option>
- 													<option>00:1B:44:11:3A:C3</option>
- 													<option>00:1B:44:11:3A:C4</option>
- 													<option>00:1B:44:11:3A:C5</option>
- 													<option>00:1B:44:11:3A:C6</option>
- 													<option>00:1B:44:11:3A:C7</option>
- 													<option>00:1B:44:11:3A:C8</option>
- 													<option>00:1B:44:11:3A:C9</option>
- 													<option>00:1B:44:11:3A:D0</option>
- 													<option>00:1B:44:11:3A:D1</option>
- 													<option>00:1B:44:11:3A:D2</option>
- 													<option>00:1B:44:11:3A:D3</option>
- 													<option>00:1B:44:11:3A:D4</option>
- 													<option>DD:35:00:02:B8:E2</option>
- 													<option>DD:35:00:02:BA:60</option>
- 												</select>
- 											</div> -->
  										</div>
  									</div>
  									<a href="#">Edit</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#">Delete</a>

@@ -162,176 +162,198 @@
         <div class="box-header with-border">
           <!--<h3 class="box-title">Create IAM User Profile</h3>-->
           <h3 class="box-title">Add New Client</h3>
-          <a href="<?php echo $sampleFileDownload; ?>" class="label label-primary pull-right" >Download MAC ID Sample File</a>
+          <!-- <a href="<?php echo $sampleFileDownload; ?>" class="label label-primary pull-right" >Download MAC ID Sample File</a> -->
         </div>
         <!-- form start -->
         <form name="addClient" method="post" action="" enctype="multipart/form-data" id="addClient">
-              <div class="box-body">
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <!--<label for="profile_name">Client Profile Name </label>-->
-                      <label for="profile_name">Company Name </label>
-					  <input type="text" class="form-control" name="profile_name" placeholder="Enter client profile name" value="<?php echo !empty($ClientData['profile_name'])?$ClientData['profile_name']:''; ?>" >
-                      <?php echo form_error('profile_name','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="name">Customer Type </label>
-                      <select class="form-control" name="customer_type">
-                        <option value="">Select</option>
-                        <?php foreach ($CustomerTypeData as $key => $value)  ?>
-                          
-                        <option <?php if(!empty($ClientData['customer_type'])){ echo ($ClientData['customer_type']==$value['id'])? "selected": ""; } ?> value="<?= $value['id']?>"><?= $value['name']?></option>
+		          <div class="box-body">
+		            <div class="row">
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="profile_name">Client Profile Name </label>
+		                  <input type="text" class="form-control" name="profile_name" placeholder="Enter client profile name" value="<?php echo !empty($ClientData['profile_name'])?$ClientData['profile_name']:''; ?>" >
+		                  <?php echo form_error('profile_name','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="name">Customer Type </label>
+		                  <select class="form-control" name="customer_type">
+		                    <option value="">Select</option>
+		                    <?php foreach ($CustomerTypeData as $key => $value)  ?>
+		                      
+		                    <option <?php if(!empty($ClientData['customer_type'])){ echo ($ClientData['customer_type']==$value['id'])? "selected": ""; } ?> value="<?= $value['id']?>"><?= $value['name']?></option>
 
-                        <?  ?>
-                        
-                      </select>
-                      <?php echo form_error('customer_type','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-				  <div class="col-md-4">
-                    <div class="form-group">
-                      <label></label>
-                      <input type="file" name="mac_id_file" id="file" class="input-file" accept=".xls">
-                      <label for="file" class="btn btn-tertiary js-labelFile">
-                      <i class="icon fa fa-check"></i>
-                      <span class="js-fileName"></span>
-                      </label>
-                      <label style="margin-top: 5px">Upload ASCII file serial number  or MAC ID</label>
-                      <?php  if(!empty($mac_id_file_error)){
-                      echo '<div class="help-block error">'.$mac_id_file_error.'</div>'; }?>
-                      <?php echo form_error('mac_id_file','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="name">Email </label>
-                      <input type="text" class="form-control" name="email" placeholder="Enter email" value="<?php echo !empty($ClientData['email'])?$ClientData['email']:''; ?>" >
-                      <?php echo form_error('email','<p class="help-block error mt-2">','</p>'); ?>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="name">Phone Number </label>
-                      <input type="text" class="form-control" name="phone_number" placeholder="Enter phone number" value="<?php echo !empty($ClientData['phone_number'])?$ClientData['phone_number']:''; ?>" >
-                      <?php echo form_error('phone_number','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="country">Select Country </label>
-                      <select class="form-control" name="country"  id="country">
-                        <option value="">Select </option>
-                         <?php
-                            foreach($country as $row) { ?>
-                             <option <?php if(!empty($ClientData["country"])){ echo ($ClientData["country"]==$row->country_id)? "selected": ""; } ?>  value=<?= $row->country_id ?>><?= $row->country_name ?></option>
-                            <?php } ?>
-                      </select>
-                      <?php echo form_error('country','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="state">Select State </label>
-                      <select class="form-control" name="state" id="state">                     
-                        <option value="">Select</option>
-                      </select>
-                      <?php echo form_error('state','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="city">City </label>
-                      <select class="form-control" name="city" id="city">                     
-                          <option value="">Select City</option>
-                      </select>
-                      <?php echo form_error('city','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="postal_code">Postal Code </label>
-                      <input type="number" class="form-control" name="postal_code" placeholder="Enter postal code" value="<?php echo !empty($ClientData['postal_code'])?$ClientData['postal_code']:''; ?>" >
-                      <?php echo form_error('postal_code','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="address_line1">Address Line 1  </label>
-                      <textarea class="form-control" name="address_line1" placeholder="Enter Address"  ><?php echo !empty($ClientData['address_line1'])?$ClientData['address_line1']:''; ?></textarea>
-                      <?php echo form_error('address_line1','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="address_line2">Address Line 2 </label>
-                      <textarea class="form-control" name="address_line2" placeholder="Enter Address" value="" ><?php echo !empty($ClientData['address_line2'])?$ClientData['address_line2']:''; ?></textarea>
-                      <?php echo form_error('address_line2','<p class="help-block error">','</p>'); ?>
+		                    <?  ?>
+		                    
+		                  </select>
+		                  <?php echo form_error('customer_type','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		              <!-- <div class="col-md-4">
+		                <div class="form-group">
+		                  <label></label>
+		                  <input type="file" name="mac_id_file" id="file" class="input-file" accept=".xls">
+		                  <label for="file" class="btn btn-tertiary js-labelFile">
+		                  <i class="icon fa fa-check"></i>
+		                  <span class="js-fileName"></span>
+		                  </label> -->
+		                  <!-- <label style="margin-top: 5px">Upload ASCII file serial number  or MAC ID</label>
+		                  <?php  if(!empty($mac_id_file_error)){
+		                  echo '<div class="help-block error">'.$mac_id_file_error.'</div>'; }?>
+		                  <?php echo form_error('mac_id_file','<p class="help-block error">','</p>'); ?> -->
+						  
+		                </div>
+		              </div>
+		            </div>
+		            <div class="row">
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="name">Email </label>
+		                  <input type="text" class="form-control" name="email" placeholder="Enter email" value="<?php echo !empty($ClientData['email'])?$ClientData['email']:''; ?>" >
+		                  <?php echo form_error('email','<p class="help-block error mt-2">','</p>'); ?>
+		                </div>
+		              </div>
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="name">Phone Number </label>
+		                  <input type="text" class="form-control" name="phone_number" placeholder="Enter phone number" value="<?php echo !empty($ClientData['phone_number'])?$ClientData['phone_number']:''; ?>" >
+		                  <?php echo form_error('phone_number','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="country">Select Country </label>
+		                  <select class="form-control" name="country"  id="country">
+	                        <option value="">Select </option>
+	                         <?php
+	                            foreach($country as $row) { ?>
+	                             <option <?php if(!empty($ClientData["country"])){ echo ($ClientData["country"]==$row->country_id)? "selected": ""; } ?>  value=<?= $row->country_id ?>><?= $row->country_name ?></option>
+	                            <?php } ?>
+	                      </select>
+		                  <?php echo form_error('country','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		            </div>
+		            <div class="row">
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="state">Select State </label>
+		                  <select class="form-control" name="state" id="state">		                  
+		                  	<option value="">Select State</option>
+		                  </select>
+		                  <?php echo form_error('state','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="city">City </label>
+		                   <select class="form-control" name="city" id="city">		                  
+			                  	<option value="">Select City</option>
+			                </select>
+		                  <?php echo form_error('city','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                    <label for="postal_code">Postal Code </label>			               
+			                 <input type="number" class="form-control" name="postal_code" placeholder="Enter postal code" value="<?php echo !empty($ClientData['postal_code'])?$ClientData['postal_code']:''; ?>" >
+		                  <?php echo form_error('postal_code','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		            </div>
+		            <div class="row">
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="address_line1">Address Line 1  </label>
+		                  <textarea class="form-control" name="address_line1" placeholder="Enter Address"  ><?php echo !empty($ClientData['address_line1'])?$ClientData['address_line1']:''; ?></textarea>
+		                  <?php echo form_error('address_line1','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>	
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="address_line2">Address Line 2 </label>
+		                  <textarea class="form-control" name="address_line2" placeholder="Enter Address" value="" ><?php echo !empty($ClientData['address_line2'])?$ClientData['address_line2']:''; ?></textarea>
+		                  <?php echo form_error('address_line2','<p class="help-block error">','</p>'); ?>
 
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="notes">Notes</label>
-                      <textarea class="form-control" name="notes" placeholder="Enter some notes" value="" ><?php echo !empty($ClientData['notes'])?$ClientData['notes']:''; ?></textarea>
-                      <?php echo form_error('notes','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="contact_name">Contact Name </label>
-                      <input type="text" class="form-control" name="contact_name" placeholder="Enter Contact name" value="<?php echo !empty($ClientData['contact_name'])?$ClientData['contact_name']:''; ?>" >
-                      <?php echo form_error('contact_name','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="contact_title">Contact Title </label>
-                      <input type="text" class="form-control" name="contact_title" placeholder="Enter Contact title" value="<?php echo !empty($ClientData['contact_title'])?$ClientData['contact_title']:''; ?>" >
-                      <?php echo form_error('contact_title','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="status" class="">Status</label>
-                      <select class="form-control" name="status">
-                        <option value="">Please select</option>
-                        <option <?php if(!empty($ClientData['status'])){ echo ($ClientData['status']=="Active")? "selected": ""; } ?> value="Active">Active</option>
-                        <option <?php if(!empty($ClientData['status'])){ echo ($ClientData['status']=="Inactive")? "selected": ""; } ?> value="Inactive">Inactive</option>
-                      </select>
-                      <?php echo form_error('status','<p class="help-block error">','</p>'); ?>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <hr style="border-top: 2px dotted #1c1a1a47;">
-                    <p style="margin-left: 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                      consequat , Duis aute irure dolor in reprehenderit in voluptate velit esse.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="box-footer ">
-                <!--<input type="submit" name="userSubmit" class="btn btn-primary  btn-modify" value="<?php echo $action_btn; ?> Profile"/>-->
-              <input type="submit" name="userSubmit" class="btn btn-primary  btn-modify" value="Submit"/>
-			  </div>
-            </form>   
-      </div>
-    </div>
-  </div>
+		                </div>
+		              </div>
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="notes">Notes</label>
+		                  <textarea class="form-control" name="notes" placeholder="Enter some notes" value="" ><?php echo !empty($ClientData['notes'])?$ClientData['notes']:''; ?></textarea>
+		                  <?php echo form_error('notes','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		            </div>
+		            <div class="row">
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="contact_name">Contact Name </label>
+		                  <input type="text" class="form-control" name="contact_name" placeholder="Enter Contact name" value="<?php echo !empty($ClientData['contact_name'])?$ClientData['contact_name']:''; ?>" >
+		                  <?php echo form_error('contact_name','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="contact_title">Contact Title </label>
+		                  <input type="text" class="form-control" name="contact_title" placeholder="Enter Contact title" value="<?php echo !empty($ClientData['contact_title'])?$ClientData['contact_title']:''; ?>" >
+		                  <?php echo form_error('contact_title','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="status" class="">Status</label>
+		                  <select class="form-control" name="status">
+		                    <option value="">Please select</option>
+		                    <option <?php if(!empty($ClientData['status'])){ echo ($ClientData['status']=="Active")? "selected": ""; } ?> value="Active">Active</option>
+		                    <option <?php if(!empty($ClientData['status'])){ echo ($ClientData['status']=="Inactive")? "selected": ""; } ?> value="Inactive">Inactive</option>
+		                  </select>
+		                  <?php echo form_error('status','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+		            </div>
+		            <div class="row">
+					<div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="contact_title">Available devices MacIDs</label>
+						  
+						  <div style="height:120px;width:320px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+ 								<?php if (isset($allDevices))
+										foreach ($allDevices as $service) : ?>
+ 									<?php echo $service->id."-".$service->device_id; ?>
+										</br>
+ 								<?php endforeach; ?>
+										 </div>
+		                </div>
+		              </div>
+					  <div class="col-md-4">
+		                <div class="form-group">
+		                  <label for="contact_title">Enter number of devices</label>
+		                  <input min="1" max="<?php echo $deviceCount; ?>" type="number" class="form-control" name="device_count" placeholder="Device Count to Assign" value="<?php echo !empty($ClientData['device_count'])?$ClientData['device_count']:''; ?>" >
+		                  <?php echo form_error('contact_title','<p class="help-block error">','</p>'); ?>
+		                </div>
+		              </div>
+					</div>
+		            <div class="row">
+		              <div class="col-md-12">
+		                <hr style="border-top: 2px dotted #1c1a1a47;">
+		                <!-- <p style="margin-left: 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		                  consequat , Duis aute irure dolor in reprehenderit in voluptate velit esse.
+		                </p> -->
+		              </div>
+		            </div>
+		          </div>
+		          <div class="box-footer ">
+		            <input type="submit" name="userSubmit" class="btn btn-primary  btn-modify" value="<?php echo $action_btn; ?> Profile"/>
+		          </div>
+		        </form>  	
+			</div>
+		</div>			
+	
+	</div>
 </section>
 <!-- /.content -->
 

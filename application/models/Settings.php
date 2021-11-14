@@ -27,6 +27,7 @@ class Settings extends CI_Model{
 	function getAllDevices(){
 		$this->db->select("*");
 		$this->db->from("tbl_inventory");
+		$this->db->where('assigned','no');
 		$result = $this->db->get();
 		return $result->result();
 	}

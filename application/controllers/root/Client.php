@@ -212,7 +212,7 @@ class Client extends CI_Controller {
                     }
 
                     $insert = $this->db->insert_batch('tbl_devices', $data_toInsert);
-                    $this->ClientModel->updateDeviceStatus($idArr);
+                    $this->ClientModel->updateDeviceStatus($idArr,"yes");
                         
                         if ($insert){
                             $total_devices = array('total_devices' =>count($data_toInsert) );
@@ -305,12 +305,22 @@ class Client extends CI_Controller {
         $data['action'] = 'Add';
         $data['action_btn'] = 'Create';
         $data['allDevices'] = $this->Settings->getAllDevices();
+        $data['deviceCount'] = $this->Settings->getDeviceCount();
         //load the view
         $this->data['maincontent'] = $this->load->view('root/client/add-edit-client', $data, true);   
         $this->load->view($this->layout, $this->data);     
     }
 
     public function edit($id,$redirect=''){
+        if(!empty($this->input->post('service')))
+        {
+            echo "not null";
+       foreach ( $this->input->post('service') as $obj)
+           {
+               $mycheck[]= $obj; 
+               echo $obj;
+           }
+        }
         $data = array();
         //get user data by id
         $id=base64_decode($id);
@@ -461,6 +471,8 @@ class Client extends CI_Controller {
         $data['action_btn'] = 'Update';
 
         $data['allDevices'] = $this->ClientModel->getClientDevices($id);
+
+        $data['deviceCount'] = $this->Settings->getDeviceCount();
         //load the view
         $this->data['maincontent'] = $this->load->view('root/client/add-edit-client', $data, true);   
         $this->load->view($this->layout, $this->data);     

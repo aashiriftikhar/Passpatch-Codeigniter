@@ -239,7 +239,7 @@
 						  <div style="height:120px;width:320px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
  								<?php if (isset($allDevices))
 										foreach ($allDevices as $service) : ?>
- 									<input type="checkbox" value="'.$row['id'].'" name="service[]">
+ 									<input type="checkbox" value="<?php echo $service->id; ?>" name="service[]">
  									<?php echo $service->id."-".$service->device_id; ?>
 										</br>
  								<?php endforeach; ?>
@@ -249,7 +249,7 @@
 					  <div class="col-md-4">
 		                <div class="form-group">
 		                  <label for="contact_title">Enter number of devices</label>
-		                  <input min="1" max="100" type="number" class="form-control" name="device_count" placeholder="Device Count to Assign" value="<?php echo !empty($ClientData['device_count'])?$ClientData['device_count']:''; ?>" >
+		                  <input min="1" max="<?php echo $deviceCount; ?>" type="number" class="form-control" name="device_count" placeholder="Device Count to Assign" value="<?php echo !empty($ClientData['device_count'])?$ClientData['device_count']:''; ?>" >
 		                  <?php echo form_error('contact_title','<p class="help-block error">','</p>'); ?>
 		                </div>
 		              </div>

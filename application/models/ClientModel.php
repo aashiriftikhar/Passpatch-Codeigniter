@@ -24,11 +24,11 @@ class ClientModel extends CI_Model{
 		return $query->result();
 	}
 
-	public function updateDeviceStatus($idArr){
+	public function updateDeviceStatus($idArr,$status){
 		$this->db->from("tbl_inventory");
 		$this->db->where_in("id", $idArr);
 		$data = array(
-			'assigned' => 'yes');
+			'assigned' => $status);
 		$this->db->update('tbl_inventory', $data);
 	}
 
@@ -146,7 +146,28 @@ class ClientModel extends CI_Model{
 	}
 
 
+	public function updateDeviceByMac($idArr,$status){
+		if(count($idArr)>0){
+		$this->db->from("tbl_inventory");
+		$this->db->where_in("device_id", $idArr);
+		$data = array(
+			'assigned' => $status);
+		$this->db->update('tbl_inventory', $data);
+		}
+
+	}
+
 	public function delete($id){
+		$this->db->from("tbl_devices");
+		$this->db->where("client_id",$id);
+		$results = $this->db->get();
+		$idsArray=array();
+		$count = 0;
+		foreach($results->result() as $rs){
+			$idsArray[$count] =  $rs->device_id;
+			++$count;
+		}
+		$this->updateDeviceByMac($idsArray,"no");
 		$delete = $this->db->delete($this->tableName,array('id'=>$id));
 		return $delete?true:false;
 	}

@@ -31,6 +31,8 @@ class SettingsRoot extends CI_Controller
 
     }
 
+
+
     public function index()
     {
         $data['listURL'] = base_url();
@@ -46,7 +48,6 @@ class SettingsRoot extends CI_Controller
     {
 
         if ( isset($_POST['addDevice'])) {
-            log_message('debug','zaleel');
 
             $config = array(
                 'upload_path' => 'uploads/',
@@ -64,6 +65,8 @@ class SettingsRoot extends CI_Controller
                 $sheets = $this->spreadsheet_excel_reader->sheets[0];
                 // error_reporting(0);
                 $data_excel = array();
+
+    
                 for ($i = 2; $i <= $sheets['numRows']; $i++) {
                     if ($sheets['cells'][$i][1] == '') break;
                     echo '<pre>';print_r($sheets['cells'][$i][1]);

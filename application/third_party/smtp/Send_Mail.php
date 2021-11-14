@@ -12,7 +12,7 @@ $mail->SMTPAuth   = true;                  // enable SMTP authentication
 $mail->Host       = "passpatchllc.com";
 $mail->Port       =  25;                    // set the SMTP port
 $mail->Username   = "temp@passpatchllc.com"; // SMTP  username
-$mail->Password   = "HT,.]Um=_hsm";// SMTP password
+$mail->Password   = "Mybestpasspatch2021";// SMTP password
 $mail->SetFrom($from, $from_email);
 $mail->AddReplyTo($from,'From Name');
 //$mail->AddEmbeddedImage('https://www.mail-signatures.com/articles/wp-content/themes/emailsignatures/images/twitter-35x35.gif', 'pic-twitter', 'twitter.jpg ');
