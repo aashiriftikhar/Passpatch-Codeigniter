@@ -28,8 +28,8 @@ $baseURL .= str_replace(basename($_SERVER["SCRIPT_NAME"]), "", $_SERVER["SCRIPT_
 
 // $config['base_url'] 	= 'http://localhost/pass/';
 $config['base_url'] 	= $baseURL;
-$config['public_url'] 	= 'http://'. $_SERVER['HTTP_HOST'].'/pass/assets/';
-$config['upload_url'] 	= 'http://'. $_SERVER['HTTP_HOST'].'/pass/uploads/';
+$config['public_url'] 	= 'https://'. $_SERVER['HTTP_HOST'].'/pass/assets/';
+$config['upload_url'] 	= 'https://'. $_SERVER['HTTP_HOST'].'/pass/uploads/';
 /*
 |--------------------------------------------------------------------------
 | Index File
