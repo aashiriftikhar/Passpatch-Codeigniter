@@ -31,6 +31,13 @@ class ClientModel extends CI_Model{
 			'assigned' => $status);
 		$this->db->update('tbl_inventory', $data);
 	}
+	public function updateDeviceStatusMac($idArr,$status){
+		$this->db->from("tbl_inventory");
+		$this->db->where_in("device_id", $idArr);
+		$data = array(
+			'assigned' => $status);
+		$this->db->update('tbl_inventory', $data);
+	}
 
 	public function getClientDevices($id){
 		$this->db->from("tbl_devices");
@@ -96,6 +103,13 @@ class ClientModel extends CI_Model{
         // $result = ($query->num_rows() > 0)?$query->row_array():FALSE;
         return $query->result_array();
     }
+	public function getType(){
+        $this->db->select("*");
+        $this->db->from('tbl_customer_type');
+        $query = $this->db->get();       
+        // $result = ($query->num_rows() > 0)?$query->row_array():FALSE;
+        return $query->result_array();
+    }
 
     public function getSingleData($TblName,$where =''){
         $this->db->select("*");
@@ -157,6 +171,13 @@ class ClientModel extends CI_Model{
 
 	}
 
+	public function deleteClientDevice($idArr){
+		$this->db->from("tbl_devices");
+		$this->db->where_in("device_id", $idArr);
+		$this->db->delete();
+		$this->updateDeviceByMac($idArr,"no");
+	}
+
 	public function delete($id){
 		$this->db->from("tbl_devices");
 		$this->db->where("client_id",$id);
@@ -186,6 +207,10 @@ class ClientModel extends CI_Model{
 		//update user data to admin users table
 		$update = $this->db->update($this->tableName,$data,$conditions);
 		return $update?true:false;
+		
+	}
+
+	public function addDevicesToClient($macArr,$id){
 		
 	}
 }

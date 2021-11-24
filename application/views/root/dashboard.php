@@ -217,7 +217,7 @@
 		              <div class="col-md-4">
 		                <div class="form-group">
 		                  <label for="name">Phone Number </label>
-		                  <input type="text" class="form-control" name="phone_number" placeholder="Enter phone number" value="<?php echo !empty($ClientData['phone_number'])?$ClientData['phone_number']:''; ?>" >
+		                  <input type="number" class="form-control" name="phone_number" placeholder="Enter phone number" value="<?php echo !empty($ClientData['phone_number'])?$ClientData['phone_number']:''; ?>" >
 		                  <?php echo form_error('phone_number','<p class="help-block error">','</p>'); ?>
 		                </div>
 		              </div>

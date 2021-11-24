@@ -34,6 +34,7 @@
 
  								<form name="addMAC" class="form form-inline" method="post" action="<?php echo base_url(); ?>root/SettingsRoot/addDeviceToInventory" enctype="multipart/form-data" id="addMAC">
  									<fieldset>
+									 
  										<legend>Upload MAC ID to Inventory</legend>
  										<div class="form-group">
  											<label></label>
@@ -84,14 +85,19 @@
  								</div>
  								<div class="col-md-12">
  									<hr>
- 									<form name="search_form" action="<?php echo $listURL; ?>" method="post" />
+
+									 <?php if ($this->session->flashdata('added')) { ?>
+ 												<div class="alert alert-success">
+ 													<a href="#" class="close" data-dismiss="alert">&times;</a>
+ 													<strong>Success! Device added</strong><?php echo $this->session->flashdata('added') ?>
+ 												</div>
+
+ 											<?php } ?>
+ 									<form name="search_form" action="<?php echo base_url(); ?>root/SettingsRoot/addSingleDevice" method="post" />
  									<div class="input-group input-group-sm" style="width: 350px;">
  										<input type="text" name="userSearchMAC" placeholder="Enter MAC..." value="<?php echo !empty($searchKeyword) ? $searchKeyword : ''; ?>" class="form-control pull-right">
  										<div class="input-group-btn">
- 											<input type="submit" name="submitSearch" class="btn btn-default" value="SEARCH">
- 											<input type="submit" name="submitSearchReset" class="btn btn-default" value="RESET">
- 											<input type="submit" name="submitSearchReset" class="btn btn-default" value="EDIT">
- 											<input type="submit" name="submitSearchReset" class="btn btn-default" value="DELETE">
+ 											<input type="submit" name="submitSearch" class="btn btn-default" value="Add Device">
  											<!--<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>-->
  										</div>
  									</div>
@@ -102,6 +108,14 @@
  							<div style="margin: 20px 10px 0 10px;">
  								<p>
  									Total Devices
+ 								<p>
+ 									<?php echo $totalDevices; ?>
+ 								</p>
+ 								</p>
+ 							</div>
+ 							<div style="margin: 20px 10px 0 10px;">
+ 								<p>
+ 									Available Devices Count
  								<p>
  									<?php echo $countOfDevice; ?>
  								</p>

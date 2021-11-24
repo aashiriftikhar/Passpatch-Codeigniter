@@ -21,7 +21,10 @@ class Settings extends CI_Model{
 		$this->db->from("tbl_inventory");
 		$this->db->where('assigned','no');
 		return $this->db->count_all_results();
-
+	}
+	function getTotalCount(){
+		$this->db->from("tbl_inventory");
+		return $this->db->count_all_results();
 	}
 
 	function getAllDevices(){
@@ -30,6 +33,14 @@ class Settings extends CI_Model{
 		$this->db->where('assigned','no');
 		$result = $this->db->get();
 		return $result->result();
+	}
+
+	public function addSingleDevice($dev){
+		$data = array(
+			'device_id' => $dev
+	);
+	$this->db->insert('tbl_inventory', $data);
+
 	}
     
 	/*

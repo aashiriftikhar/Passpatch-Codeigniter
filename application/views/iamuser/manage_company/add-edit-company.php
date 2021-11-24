@@ -63,7 +63,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="name">Phone Number </label>
-									<input type="text" class="form-control" name="name" placeholder="Enter phone number" value="" >
+									<input type="number" class="form-control" name="name" placeholder="Enter phone number" value="" >
 								</div>
 							</div>
 

@@ -39,13 +39,30 @@ class SettingsRoot extends CI_Controller
         $data['action'] = 'Setting';
         $data['countOfDevice'] = $this->Settings->getDeviceCount();
         $data['allDevices'] = $this->Settings->getAllDevices();
+        $data['totalDevices'] = $this->Settings->getTotalCount();
+        
         $this->data['maincontent'] = $this->load->view('root/settings', $data, true);
         $this->load->view($this->layout, $this->data);
+    }
+    function consoleLog($msg) {
+		echo '<script type="text/javascript">' .
+          'console.log(' . $msg . ');</script>';
+	}
+
+
+    public function addSingleDevice(){
+        if ( isset($_POST['userSearchMAC'])) {
+            $this->Settings->addSingleDevice($_POST['userSearchMAC']);
+            $this->session->set_flashdata('added', 'Successfully Added.');
+            redirect('root/SettingsRoot/index', 'refresh');
+        }
     }
 
     //upload mac to inventory
     public function addDeviceToInventory()
     {
+
+ 
 
         if ( isset($_POST['addDevice'])) {
 

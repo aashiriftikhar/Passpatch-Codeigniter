@@ -134,6 +134,12 @@ class Client extends CI_Controller {
     /*
      * Add user information
      */
+
+    function consoleLog($msg) {
+		echo '<script type="text/javascript">' .
+          'console.log(' . $msg . ');</script>';
+	}
+
     public function add(){
 
         $data = array();
@@ -157,10 +163,10 @@ class Client extends CI_Controller {
             $this->form_validation->set_rules('contact_name', 'Contact Name', 'required|trim');            
             $this->form_validation->set_rules('contact_title', 'Contact Title', 'required|trim');            
             $this->form_validation->set_rules('notes', 'Notes', 'trim');            
-            $this->form_validation->set_rules('status', 'Status', 'required|trim');
-            $this->form_validation->set_rules('device_count', 'Device Count to Assign', 'required|trim');  
+            $this->form_validation->set_rules('status', 'Status', 'required|trim'); 
             
-            $post =  $this->security->xss_clean($this->input->post());  
+            $post =  $this->security->xss_clean($this->input->post());
+   
 
                 $tempstring ='1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz'.time();
                 $password = substr(str_shuffle($tempstring), 0,8);
@@ -193,13 +199,9 @@ class Client extends CI_Controller {
                 
                 if($insert_ID){     
                     
-                    $config = array(
-                        'upload_path'   => 'uploads/',
-                        'allowed_types' => 'xls'
-                    );
-                    $this->load->library('upload', $config);
 
                     $getDevice = $this->ClientModel->getDevices($post['device_count']);
+                    if($getDevice>0){
                     $data_toInsert = array();
                     $arrCount = 0;
                     $idArr=array();
@@ -221,41 +223,7 @@ class Client extends CI_Controller {
                         }else{
                             $data['error_msg'] = 'Some problems occured, please try again.';
                         }
-
-                    // if ($this->upload->do_upload('mac_id_file')) {
-                    //     $data = $this->upload->data();
-                    //     @chmod($data['full_path'], 0777);
-
-                    //     $this->load->library('Spreadsheet_Excel_Reader');
-                    //     $this->spreadsheet_excel_reader->setOutputEncoding('CP125');
-
-                    //     $this->spreadsheet_excel_reader->read($data['full_path']);
-                    //     $sheets = $this->spreadsheet_excel_reader->sheets[0];
-                    //     // error_reporting(0);
-
-                    //     $data_excel = array();
-                    //     for ($i = 1; $i <= $sheets['numRows']; $i++) {
-                    //         if ($sheets['cells'][$i][1] == '') break;
-
-                    //         $data_excel[$i - 1]['device_id']    = $sheets['cells'][$i][1];              
-                    //         $data_excel[$i - 1]['client_id']    = $insert_ID;
-
-                    //         $data_excel[$i - 1]['created_at']    = date("Y-m-d H:i:s");                                          
-                    //     }
-
-                    //     $insert = $this->db->insert_batch('tbl_devices', $data_excel);
-                        
-                    //     if ($insert){
-                    //         $total_devices = array('total_devices' =>count($data_excel) );
-                    //         $this->ClientModel->update($total_devices, array('id'=>$insert_ID));
-                    //         @unlink($data['full_path']);
-                    //     }else{
-                    //         $data['error_msg'] = 'Some problems occured, please try again.';
-                    //     }
-
-                    // }elseif (!empty($_FILES['file']['name']) && $this->upload->display_errors()) {
-                    //         $data['mac_id_file_error'] = $this->upload->display_errors();
-                    // }
+                    }
 
                     $to = $ClientData['email'];
                     $subject = 'Account Password';
@@ -298,34 +266,63 @@ class Client extends CI_Controller {
         
         //define some useful variables for view
         $data['ClientData'] = $ClientData;   
+        $data['ClientData']['status'] = "Active";
         $data['ClientDataList'] = $this->ClientModel->getRows();     
-        $data['CustomerTypeData'] = $this->ClientModel->getData('tbl_customer_type',array());   
+        $data['CustomerTypeData'] = $this->ClientModel->getType();
+       
         $data['country'] = $this->DDM->fetch_country();     
         $data['listURL'] = base_url().$this->controller;
         $data['action'] = 'Add';
         $data['action_btn'] = 'Create';
-        $data['allDevices'] = $this->Settings->getAllDevices();
+        $data['clientDevices'] = $this->Settings->getAllDevices();
         $data['deviceCount'] = $this->Settings->getDeviceCount();
+        $data['allDevices'] = $this->Settings->getAllDevices();
         //load the view
         $this->data['maincontent'] = $this->load->view('root/client/add-edit-client', $data, true);   
         $this->load->view($this->layout, $this->data);     
     }
 
     public function edit($id,$redirect=''){
-        if(!empty($this->input->post('service')))
-        {
-            echo "not null";
-       foreach ( $this->input->post('service') as $obj)
-           {
-               $mycheck[]= $obj; 
-               echo $obj;
-           }
-        }
+       
         $data = array();
         //get user data by id
         $id=base64_decode($id);
 
         $ClientData = $this->ClientModel->getRows(array('id'=>$id));
+        if(!empty($this->input->post('removing')))
+        {
+           $checked = $this->input->post('removing');
+           $arrRemove=array();
+           $count=0;
+           foreach($checked as $fields){
+               $arrRemove[$count] = $fields;
+               ++$count;
+           }
+           $this->ClientModel->deleteClientDevice($arrRemove);
+        }
+        if(!empty($this->input->post('assigning')))
+        {
+           $checked = $this->input->post('assigning');
+           $arrAdd=array();
+           $idArr=array();
+           $count=0;
+           foreach($checked as $fields){
+            $arrAdd[$count]['device_id']    = $fields;              
+            $arrAdd[$count]['client_id']    = $id;
+            $arrAdd[$count]['created_at']    = date("Y-m-d H:i:s");
+            $idArr[$count] = $fields;
+            $count=$count+1;
+}
+
+$insert = $this->db->insert_batch('tbl_devices', $arrAdd);
+$this->ClientModel->updateDeviceStatusMac($idArr,"yes");
+if ($insert){
+    $total_devices = array('total_devices' =>count($arrAdd) );
+    $this->ClientModel->update($total_devices, array('id'=>$id));
+}else{
+    $data['error_msg'] = 'Some problems occured, please try again.';
+}
+        }
         
         
         //if add request is submitted
@@ -333,8 +330,7 @@ class Client extends CI_Controller {
 
             //form field validation rules            
             $this->form_validation->set_rules('profile_name', 'Profile Name', 'required|trim');
-            $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|trim'); 
-            $this->form_validation->set_rules('device_count', 'Device Count to Assign', 'required|trim');            
+            $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|trim');            
             $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|callback_email_check[' . $id . ']');
             $this->form_validation->set_rules('customer_type', 'Customer Type', 'required|trim');
             $this->form_validation->set_rules('country', 'Country', 'required|trim');            
@@ -344,13 +340,20 @@ class Client extends CI_Controller {
             $this->form_validation->set_rules('address_line1', 'Address Line 1', 'required|trim');
             $this->form_validation->set_rules('address_line2', 'Address Line 2', 'trim');            
             $this->form_validation->set_rules('contact_name', 'Contact Name', 'required|trim');            
-            $this->form_validation->set_rules('contact_title', 'Contact Title', 'required|trim');            
+            $this->form_validation->set_rules('contact_title', 'Contact Title', 'required|trim');   
             $this->form_validation->set_rules('notes', 'Notes', 'trim');            
-            $this->form_validation->set_rules('status', 'Status', 'required|trim');            
+            $this->form_validation->set_rules('status', 'Status', 'required|trim');   
+            $this->form_validation->set_rules('device', 'Devices', 'trim');                 
            
 
             
             $post =  $this->security->xss_clean($this->input->post());  
+
+        
+            
+
+    
+
 
                 $tempstring ='1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz'.time();
                 $password = substr(str_shuffle($tempstring), 0,8);
@@ -378,53 +381,33 @@ class Client extends CI_Controller {
                 $update = $this->ClientModel->update($ClientData, array('id'=>$id));
                 if($update){     
                         
-                    $config = array(
-                        'upload_path'   => 'uploads/',
-                        'allowed_types' => 'xls'
-                    );
-                    $this->load->library('upload', $config);
 
-                    if ($this->upload->do_upload('mac_id_file')) {
-                        $this->ClientModel->delete_macIDs($id);
-
-                        $data = $this->upload->data();
-                       // @chmod($data['full_path'], 0777);
-
-                        $this->load->library('Spreadsheet_Excel_Reader');
-                        $this->spreadsheet_excel_reader->setOutputEncoding('CP125');
-
-                        $this->spreadsheet_excel_reader->read($data['full_path']);
-                        $sheets = $this->spreadsheet_excel_reader->sheets[0];
-                        // error_reporting(0);
-
-                        $data_excel = array();
-                        for ($i = 1; $i <= $sheets['numRows']; $i++) {
-                            if ($sheets['cells'][$i][1] == '') break;
-
-                            $data_excel[$i - 1]['device_id']    = $sheets['cells'][$i][1];              
-                            $data_excel[$i - 1]['client_id']    = $id;
-
-                            $data_excel[$i - 1]['created_at']    = date("Y-m-d H:i:s");                                          
-                        }
-
-                        $insert = $this->db->insert_batch('tbl_devices', $data_excel);
                         
-                        if ($insert){   
+                    // $getDevice = $this->ClientModel->getDevices($post['device_count']);
+                    // if($getDevice>0){
+                    // $data_toInsert = array();
+                    // $arrCount = 0;
+                    // $idArr=array();
+                    // foreach($getDevice as $device){
+                    //             $data_toInsert[$arrCount]['device_id']    = $device->device_id;              
+                    //             $data_toInsert[$arrCount]['client_id']    = $id;
+                    //             $data_toInsert[$arrCount]['created_at']    = date("Y-m-d H:i:s");
+                    //             $idArr[$arrCount] = $device->id;
+                    //             $arrCount=$arrCount+1;
+                    // }
 
-                             $total_devices = array('total_devices' =>count($data_excel) );
-                            $this->ClientModel->update($total_devices, array('id'=>$id));
+                    // $insert = $this->db->insert_batch('tbl_devices', $data_toInsert);
+                    // $this->ClientModel->updateDeviceStatus($idArr,"yes");
+                        
+                    //     if ($insert){
+                    //         $total_devices = array('total_devices' =>count($data_toInsert) );
+                    //         $this->ClientModel->update($total_devices, array('id'=>$id));
+                    //     }else{
+                    //         $data['error_msg'] = 'Some problems occured, please try again.';
+                    //     }
 
-                            @unlink($data['full_path']);
-                            
-
-                        }else{
-                            $data['error_msg'] = 'Some problems occured, please try again.';
-                        }
-
-                    }elseif ($this->upload->display_errors()) {
-                            $data['mac_id_file_error'] = "File type not allowed";
-                    }
-
+                    // }
+                }
                     if ($redirect=='client') 
                     {
                         $this->session->set_userdata('success_msg', 'Client details has been updated successfully.');
@@ -438,9 +421,7 @@ class Client extends CI_Controller {
                         redirect('root/Home');
                     }
 
-                }else{
-                    $data['error_msg'] = 'Some problems occured, please try again.';
-                }
+                
             }          
         }
 
@@ -470,7 +451,8 @@ class Client extends CI_Controller {
         $data['action'] = 'Edit';
         $data['action_btn'] = 'Update';
 
-        $data['allDevices'] = $this->ClientModel->getClientDevices($id);
+        $data['clientDevices'] = $this->ClientModel->getClientDevices($id);
+        $data['allDevices'] = $this->Settings->getAllDevices();
 
         $data['deviceCount'] = $this->Settings->getDeviceCount();
         //load the view
