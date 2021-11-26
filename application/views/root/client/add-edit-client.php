@@ -90,36 +90,36 @@ if (!empty($error_msg)) {
 
 						<div class="box-body">
 							<div class="row">
-							<?php if(!empty($ClientData['email'])) : ?>
-								<div class="col-md-4">
-									<div class="form-group">
+								<?php if (!empty($ClientData['email'])) : ?>
+									<div class="col-md-4">
+										<div class="form-group">
 
-										<label for="profile_name">Select devices you want to delete</label>
+											<label for="profile_name">Select devices you want to delete</label>
 
-										<div style="height:120px;width:320px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-
-
-											<?php if (isset($clientDevices))
-												foreach ($clientDevices as $service) : ?>
+											<div style="height:120px;width:320px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
 
 
-												<input type="checkbox" value="<?php echo $service->device_id; ?>" name="removing[]">
-												<?php echo "-" . $service->device_id; ?>
+												<?php if (isset($clientDevices))
+													foreach ($clientDevices as $service) : ?>
 
-												<!-- <?php echo form_checkbox('device[]', $service->id, set_checkbox('device', $service->id)); ?> <?php echo $service->id . "-" . $service->device_id; ?> <br /> -->
 
-												</br>
-											<?php endforeach; ?>
+													<input type="checkbox" value="<?php echo $service->device_id; ?>" name="removing[]">
+													<?php echo "-" . $service->device_id; ?>
 
+													<!-- <?php echo form_checkbox('device[]', $service->id, set_checkbox('device', $service->id)); ?> <?php echo $service->id . "-" . $service->device_id; ?> <br /> -->
+
+													</br>
+												<?php endforeach; ?>
+
+											</div>
 										</div>
 									</div>
-								</div>
 								<?php endif; ?>
 
 								<div class="col-md-4">
 
 
-								
+
 									<div class="form-group">
 
 										<label for="profile_name">Select devices you want to Add</label>
@@ -154,17 +154,23 @@ if (!empty($error_msg)) {
 										<label for="name">Customer Type </label>
 										<select class="form-control" name="customer_type">
 											<option value="">Select</option>
-											<?php foreach ($CustomerTypeData as $key => $value)  ?>
+											<!-- <?php foreach ($CustomerTypeData as $key => $value)  ?> -->
+											<?php foreach ($CustomerTypeData as $key => $value) : ?>
 
-											<option <?php if (!empty($ClientData['customer_type'])) {
-														echo ($ClientData['customer_type'] == $value['id']) ? "selected" : "";
-													} ?> value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
+												<option <?php if (!empty($ClientData['customer_type'])) {
+															echo ($ClientData['customer_type'] == $value['id']) ? "selected" : "";
+														} ?> value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
 
-											<?  ?>
+												<?
+												?>
+
+											<?php endforeach; ?>
 
 										</select>
 										<?php echo form_error('customer_type', '<p class="help-block error">', '</p>'); ?>
 									</div>
+
+									<?php foreach ($CustomerTypeData as $key => $value)  ?>
 								</div>
 								<!-- <div class="col-md-4">
 		                <div class="form-group">
@@ -298,14 +304,14 @@ if (!empty($error_msg)) {
 			</div>
 
 			<div class="row">
-				<?php if(empty($ClientData['email'])): ?>
-				<div class="col-md-4">
-					<div class="form-group">
-						<label for="device_count">Enter number of devices</label>
-						<input min="1" max="<?php echo $deviceCount; ?>" type="number" class="form-control" name="device_count" placeholder="Device Count to Assign" value="<?php echo !empty($ClientData['device_count']) ? $ClientData['device_count'] : ''; ?>">
-						<?php echo form_error('device_count', '<p class="help-block error">', '</p>'); ?>
+				<?php if (empty($ClientData['email'])) : ?>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="device_count">Enter number of devices</label>
+							<input min="1" max="<?php echo $deviceCount; ?>" type="number" class="form-control" name="device_count" placeholder="Device Count to Assign" value="<?php echo !empty($ClientData['device_count']) ? $ClientData['device_count'] : ''; ?>">
+							<?php echo form_error('device_count', '<p class="help-block error">', '</p>'); ?>
+						</div>
 					</div>
-				</div>
 				<?php endif; ?>
 
 

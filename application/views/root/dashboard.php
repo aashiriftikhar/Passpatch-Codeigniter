@@ -180,11 +180,12 @@
 		                  <label for="name">Customer Type </label>
 		                  <select class="form-control" name="customer_type">
 		                    <option value="">Select</option>
-		                    <?php foreach ($CustomerTypeData as $key => $value)  ?>
+		                    <?php foreach ($CustomerTypeData as $key => $value):  ?>
 		                      
 		                    <option <?php if(!empty($ClientData['customer_type'])){ echo ($ClientData['customer_type']==$value['id'])? "selected": ""; } ?> value="<?= $value['id']?>"><?= $value['name']?></option>
 
-		                    <?  ?>
+		                    
+ 								<?php endforeach; ?>
 		                    
 		                  </select>
 		                  <?php echo form_error('customer_type','<p class="help-block error">','</p>'); ?>

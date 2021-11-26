@@ -31,6 +31,10 @@ class Home extends CI_Controller {
         $this->perPage = 3;
     }
    
+    function consoleLog($msg) {
+		echo '<script type="text/javascript">' .
+          'console.log(' . $msg . ');</script>';
+	}
 
     public function index(){
         $data = array();
@@ -109,72 +113,87 @@ class Home extends CI_Controller {
 
         //if add request is submitted
         if($this->input->post('userSubmit')){
-            //form field validation rules            
-            $this->form_validation->set_rules('event_name', 'Event Name', 'required|trim');          
-            $this->form_validation->set_rules('location', 'Location', 'required|trim');          
-            $this->form_validation->set_rules('description', 'Description', 'required|trim');          
-            $this->form_validation->set_rules('group', 'Group', 'required|trim');          
-            $this->form_validation->set_rules('from_device_id', 'Device Id', 'required|trim');          
-            $this->form_validation->set_rules('to_device_id', 'Device Id', 'required|trim');          
+            //form field validation rules   
+            $evName = $this->input->post('event_name');     
+            foreach($evName as $ind=>$val) 
+{    
+            $this->form_validation->set_rules('event_name['.$ind.']', 'Event Name', 'required|trim');          
+            $this->form_validation->set_rules('location['.$ind.']', 'Location', 'required|trim');          
+            $this->form_validation->set_rules('description['.$ind.']', 'Description', 'required|trim');          
+            $this->form_validation->set_rules('group['.$ind.']', 'Group', 'required|trim');          
+            $this->form_validation->set_rules('from_device_id['.$ind.']', 'Device Id', 'required|trim');          
+            $this->form_validation->set_rules('to_device_id['.$ind.']', 'Device Id', 'required|trim');          
             
-            $this->form_validation->set_rules('start_date', 'Start Date', 'required|trim');          
-            $this->form_validation->set_rules('end_date', 'End Date', 'required|trim');          
-            $this->form_validation->set_rules('start_time', 'Start Time', 'required|trim');          
-            $this->form_validation->set_rules('end_time', 'End Time', 'required|trim');          
-            $this->form_validation->set_rules('time_zone', 'Time Zone', 'required|trim');          
+            $this->form_validation->set_rules('start_date['.$ind.']', 'Start Date', 'required|trim');          
+            $this->form_validation->set_rules('end_date['.$ind.']', 'End Date', 'required|trim');          
+            $this->form_validation->set_rules('start_time['.$ind.']', 'Start Time', 'required|trim');          
+            $this->form_validation->set_rules('end_time['.$ind.']', 'End Time', 'required|trim');          
+            $this->form_validation->set_rules('time_zone['.$ind.']', 'Time Zone', 'required|trim');    
+}      
             
 
             
             $post =  $this->security->xss_clean($this->input->post());  
-            $EventData = array(
-                'client_id' => $client_id,                
-                'event_name' => $post['event_name'],                
-                'description' => $post['description'],                
-                'location' => $post['location'],                
-                'group_id' => $post['group'],                
-                'from_device_id' => $post['from_device_id'],                
-                'to_device_id' => $post['to_device_id'],                                             
-                'start_date' => date("Y-m-d", strtotime($post['start_date'])),
-                'end_date' => date("Y-m-d", strtotime($post['end_date'])),                
-                'start_time' => date("H:i", strtotime($post['start_time'])),                
-                'end_time' => date("H:i", strtotime($post['end_time'])),                
-                'time_zone' => $post['time_zone']
-            );      
 
-                if(isset($_FILES['image']['name']) && $_FILES['image']['name']!=""){
+            $arrCount = 0;
+            $EventData = array();
+            foreach($this->input->post("event_name") as $e){
+            $EventData[$arrCount] = array(
+                'client_id' => $client_id,                
+                'event_name' => $post['event_name'][$arrCount],                
+                'description' => $post['description'][$arrCount],                
+                'location' => $post['location'][$arrCount],                
+                'group_id' => $post['group'][$arrCount],                
+                'from_device_id' => $post['from_device_id'][$arrCount],                
+                'to_device_id' => $post['to_device_id'][$arrCount],                                             
+                'start_date' => date("Y-m-d", strtotime($post['start_date'][$arrCount])),
+                'end_date' => date("Y-m-d", strtotime($post['end_date'][$arrCount])),                
+                'start_time' => date("H:i", strtotime($post['start_time'][$arrCount])),                
+                'end_time' => date("H:i", strtotime($post['end_time'][$arrCount])),                
+                'time_zone' => $post['time_zone'][$arrCount]
+            ); 
+            // $this->EventModel->insert($EventData);
+            ++$arrCount;  
+        }
+        
+            
+            
+
+                // if(isset($_FILES['image']['name']) && $_FILES['image']['name']!=""){
                     
-                    //upload configuration
-                    $targetDir = $this->uploadDir;
-                    $config['upload_path']   = $targetDir;
-                    $config['allowed_types'] = 'gif|jpg|png|jpeg';
-                    $this->load->library('upload', $config);
+                //     //upload configuration
+                //     $targetDir = $this->uploadDir;
+                //     $config['upload_path']   = $targetDir;
+                //     $config['allowed_types'] = 'gif|jpg|png|jpeg';
+                //     $this->load->library('upload', $config);
                     
-                    //if picture upload is successful
-                    if($this->upload->do_upload('image')){
-                        //load upload helper
-                        $this->load->helper('upload');
+                //     //if picture upload is successful
+                //     if($this->upload->do_upload('image')){
+                //         //load upload helper
+                //         $this->load->helper('upload');
                         
-                        //uploaded file data
-                        $uploadData = $this->upload->data();
+                //         //uploaded file data
+                //         $uploadData = $this->upload->data();
                         
-                        //thumbnail creation
-                        $uploadedFile = $uploadData['file_name'];
-                        $sourceImage = $targetDir.$uploadedFile;
-                        $thumbPath = $targetDir."thumb/";
-                        create_thumb($sourceImage, $uploadedFile, $thumbPath, 50, 50);
+                //         //thumbnail creation
+                //         $uploadedFile = $uploadData['file_name'];
+                //         $sourceImage = $targetDir.$uploadedFile;
+                //         $thumbPath = $targetDir."thumb/";
+                //         create_thumb($sourceImage, $uploadedFile, $thumbPath, 50, 50);
                         
-                        //uploaded picture name
-                        $EventData['image'] = $uploadedFile;
-                    }else{
-                            $data['error_msg'] = $this->upload->display_errors();
-                    }
-                }   
+                //         //uploaded picture name
+                //         $EventData['image'] = $uploadedFile;
+                //     }else{
+                //             $data['error_msg'] = $this->upload->display_errors();
+                //     }
+                // }   
 
 
             // print_r($EventData);
             // exit();
-            if($this->form_validation->run() == true){   
-                $insert_ID = $this->EventModel->insert($EventData);
+            if($this->form_validation->run() == true){  
+                $insert_ID = $this->db->insert_batch('tbl_event', $EventData); 
+                // $insert_ID = $this->EventModel->insert($EventData);
                 if($insert_ID){
                     $this->session->set_userdata('success_msg', 'Event has been added successfully.');
                     redirect($this->controller);

@@ -57,9 +57,10 @@
                   <label for="name">Select Group </label>
                   <select class="form-control" name="group">
                     <option value="">Select</option>
-                    <?php foreach ($GroupsData as $key => $value) { ?>
+                    <?php foreach ($GroupsData as $key => $value) : ?>
                     <option <?php if(!empty($EventData['group_id'])){ echo ($EventData['group_id']==$value['id'])? "selected": ""; } ?> value="<?= $value['id']?>"><?= $value['name']?></option>
-                    <? } ?>
+                    
+ 								<?php endforeach; ?>
                   </select>
                   <?php echo form_error('group','<p class="help-block error">','</p>'); ?>
                 </div>
@@ -113,9 +114,10 @@
                 <div class="form-group">
                   <select class="form-control" name="time_zone">
                     <option value="">Select</option>
-                    <?php foreach ($TimeZoneList as $key => $value) { ?>
+                    <?php foreach ($TimeZoneList as $key => $value) : ?>
                     <option <?php if(!empty($EventData['time_zone'])){ echo ($EventData['time_zone']==$value['value'])? "selected": ""; } ?> value="<?= $value['value']?>"><?= $value['text']?></option>
-                    <? } ?>
+                    
+ 								<?php endforeach; ?>
                   </select>
                   <?php echo form_error('time_zone','<p class="help-block error">','</p>'); ?>	
                 </div>
@@ -135,9 +137,10 @@
                   <div class="col-md-5">
                     <select class="form-control" name="from_device_id">
                       <option value="">Select</option>
-                      <?php foreach ($ClientMACIdData as $key => $value) { ?>
+                      <?php foreach ($ClientMACIdData as $key => $value) : ?>
                       <option <?php if(!empty($EventData['from_device_id'])){ echo ($EventData['from_device_id']==$value['id'])? "selected": ""; } ?> value="<?= $value['id']?>"><?= $value['device_id']?></option>
-                      <? } ?>
+                      
+ 								<?php endforeach; ?>
                     </select>
                     <?php echo form_error('from_device_id','<p class="help-block error">','</p>'); ?>
                   </div>
@@ -147,9 +150,10 @@
                   <div class="col-md-5">
                     <select class="form-control" name="to_device_id">
                       <option value="">Select</option>
-                      <?php foreach ($ClientMACIdData as $key => $value) { ?>
+                      <?php foreach ($ClientMACIdData as $key => $value): ?>
                       <option <?php if(!empty($EventData['to_device_id'])){ echo ($EventData['to_device_id']==$value['id'])? "selected": ""; } ?> value="<?= $value['id']?>"><?= $value['device_id']?></option>
-                      <? } ?>
+                      
+ 								<?php endforeach; ?>
                     </select>
                     <?php echo form_error('to_device_id','<p class="help-block error">','</p>'); ?>
                   </div>

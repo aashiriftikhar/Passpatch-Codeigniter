@@ -148,7 +148,7 @@ class Manage_member extends CI_Controller
 
         $client_id = $this->session->userdata('ClientId');
         $data['ClientMACIdData'] = $this->MemberModel->getData('tbl_devices',array('client_id'=>$client_id));
-        $data['EventData'] = $this->MemberModel->getData('tbl_event',array());
+        $data['EventData'] = $this->MemberModel->getData('tbl_event',array('client_id'=>$client_id));
         //define some useful variables for view
         $data['MemberData'] = $MemberData;  
         $data['listURL'] = base_url().$this->controller;
