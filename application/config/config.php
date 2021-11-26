@@ -30,15 +30,15 @@ $baseURL .= str_replace(basename($_SERVER["SCRIPT_NAME"]), "", $_SERVER["SCRIPT_
 
 // CI Setting for Deployed:
 
-// $config['base_url'] 	= $baseURL;
-// $config['public_url'] 	= 'https://'. $_SERVER['HTTP_HOST'].'/assets/';
-// $config['upload_url'] 	= 'https://'. $_SERVER['HTTP_HOST'].'/uploads/';
+$config['base_url'] 	= $baseURL;
+$config['public_url'] 	= 'https://'. $_SERVER['HTTP_HOST'].'/assets/';
+$config['upload_url'] 	= 'https://'. $_SERVER['HTTP_HOST'].'/uploads/';
 
 
 // CI Settings for Local
-$config['base_url'] 	= $baseURL;
-$config['public_url'] 	= 'http://'. $_SERVER['HTTP_HOST'].'/pass/assets/';
-$config['upload_url'] 	= 'http://'. $_SERVER['HTTP_HOST'].'/pass/uploads/';
+// $config['base_url'] 	= $baseURL;
+// $config['public_url'] 	= 'http://'. $_SERVER['HTTP_HOST'].'/pass/assets/';
+// $config['upload_url'] 	= 'http://'. $_SERVER['HTTP_HOST'].'/pass/uploads/';
 
 /*
 |--------------------------------------------------------------------------
