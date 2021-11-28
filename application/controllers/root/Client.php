@@ -317,8 +317,8 @@ class Client extends CI_Controller {
 $insert = $this->db->insert_batch('tbl_devices', $arrAdd);
 $this->ClientModel->updateDeviceStatusMac($idArr,"yes");
 if ($insert){
-    $total_devices = array('total_devices' =>count($arrAdd) );
-    $this->ClientModel->update($total_devices, array('id'=>$id));
+    // $total_devices = array('total_devices' =>count($arrAdd) );
+    // $this->ClientModel->update($total_devices, array('id'=>$id));
 }else{
     $data['error_msg'] = 'Some problems occured, please try again.';
 }
@@ -379,8 +379,10 @@ if ($insert){
             
             if($this->form_validation->run() == true){
                 $update = $this->ClientModel->update($ClientData, array('id'=>$id));
-                if($update){     
-                        
+                if($update){ 
+                    $data['clientDevices'] = $this->ClientModel->getClientDevices($id);    
+                    $total_devices = array('total_devices' =>count($data['clientDevices']));
+                    $this->ClientModel->update($total_devices, array('id'=>$id));
 
                         
                     // $getDevice = $this->ClientModel->getDevices($post['device_count']);
