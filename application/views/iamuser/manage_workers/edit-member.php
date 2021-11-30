@@ -69,9 +69,10 @@
 									<label for="device_mac_id">Device MAC ID # </label>
 									<select class="form-control" name="device_mac_id">
 			                          <option value="">Select</option>
-			                          <?php foreach ($ClientMACIdData as $key => $value) { ?>
+			                          <?php foreach ($ClientMACIdData as $key => $value) :?>
 			                          <option <?php if(!empty($MemberData['device_mac_id'])){ echo ($MemberData['device_mac_id']==$value['device_id'])? "selected": ""; } ?> value="<?= $value['device_id']?>"><?= $value['device_id']?></option>
-			                          <? } ?>
+			                          
+<?php	endforeach ?>
 			                        </select>
 			                        <?php echo form_error('device_mac_id','<p class="help-block error">','</p>'); ?>
 								</div>
@@ -81,9 +82,10 @@
 									<label for="event">Event Name </label>									
 									<select class="form-control" name="event">
 			                          <option value="">Select</option>
-			                          <?php foreach ($EventData as $key => $value) { ?>
+			                          <?php foreach ($EventData as $key => $value) : ?>
 			                          <option <?php if(!empty($MemberData['event_id'])){ echo ($MemberData['event_id']==$value['id'])? "selected": ""; } ?> value="<?= $value['id']?>"><?= $value['event_name']?></option>
-			                          <? } ?>
+			                         
+<?php	endforeach ?>
 			                        </select>
 									
 									<?php echo form_error('event','<p class="help-block error">','</p>'); ?>

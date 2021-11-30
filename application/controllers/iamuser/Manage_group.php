@@ -132,10 +132,10 @@ class Manage_group extends CI_Controller
             $this->form_validation->set_rules('name', 'Name', 'required|trim');          
             $this->form_validation->set_rules('location', 'Location', 'required|trim');          
             $this->form_validation->set_rules('description', 'Description', 'required|trim');          
-            $this->form_validation->set_rules('generalUnit_device_id_from', 'General Unit From', 'required|trim');          
-            $this->form_validation->set_rules('generalUnit_device_id_to', 'General Unit To', 'required|trim');          
-            $this->form_validation->set_rules('fixUnit_device_id_from', 'Fix Unit From', 'required|trim');          
-            $this->form_validation->set_rules('fixUnit_device_id_to', 'Fix Unit To', 'required|trim');          
+            // $this->form_validation->set_rules('generalUnit_device_id_from', 'General Unit From', 'required|trim');          
+            // $this->form_validation->set_rules('generalUnit_device_id_to', 'General Unit To', 'required|trim');          
+            // $this->form_validation->set_rules('fixUnit_device_id_from', 'Fix Unit From', 'required|trim');          
+            // $this->form_validation->set_rules('fixUnit_device_id_to', 'Fix Unit To', 'required|trim');          
             $this->form_validation->set_rules('status', 'Status', 'required|trim');    
 
             
@@ -145,10 +145,6 @@ class Manage_group extends CI_Controller
                 'name' => $post['name'],
                 'location' => $post['location'],
                 'description' => $post['description'],
-                'generalUnit_device_id_from' => $post['generalUnit_device_id_from'],
-                'generalUnit_device_id_to' => $post['generalUnit_device_id_to'],
-                'fixUnit_device_id_from' => $post['fixUnit_device_id_from'],
-                'fixUnit_device_id_to' => $post['fixUnit_device_id_to'],
                 'status' => $post['status']
             );            
             if($this->form_validation->run() == true){     

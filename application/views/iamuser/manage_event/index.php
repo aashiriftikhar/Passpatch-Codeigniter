@@ -63,9 +63,9 @@
               <th >End Date </th>
               <th >Start Time</th>
               <th >End Time</th>
-              <th >G.A Units</th>
-              <th >Fix Units</th>
-              <th >Assign</th>
+              <!-- <th >G.A Units</th>
+              <th >Fix Units</th> -->
+              <th >Device ID</th>
               <th >Action</th>
             </tr>
             <?php  
@@ -80,10 +80,11 @@
               <td><?= date('m-d-yy', strtotime($value['end_date']))?></td>
               <td><?= date('h:i A', strtotime($value['start_time']))?></td>
               <td><?= date('h:i A', strtotime($value['end_time']))?></td>
-              <td><?php echo  count_GAUnit($value['group_id']); ?></td>
-              <td><?php echo  count_FIXUnit($value['group_id']); ?></td>
+              <!-- <td><?php echo  count_GAUnit($value['group_id']); ?></td>
+              <td><?php echo  count_FIXUnit($value['group_id']); ?></td> -->
               <td>
-                <a href="#" title="Assign" data-skin="skin-purple" class="text-success"><i class="fa fa-2x fa-check" aria-hidden="true"></i></a>								
+              <?= $value['device_id']?>
+                <!-- <a href="#" title="Assign" data-skin="skin-purple" class="text-success"><i class="fa fa-2x fa-check" aria-hidden="true"></i></a>								 -->
               </td>
               <td class="action-links" >
                 <a href="<?php echo str_replace('{ID}',base64_encode($value['id']),$editURL); ?>" title="Edit" data-skin="skin-purple" class="btn bg-purple btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>								

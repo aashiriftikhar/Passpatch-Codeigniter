@@ -2,7 +2,7 @@
 
 
 
-class Manage_member extends CI_Controller
+class Manage_workers extends CI_Controller
 {
 
 	function __construct()
@@ -21,7 +21,7 @@ class Manage_member extends CI_Controller
         $this->layout = 'iamuser/layout';
 		
 		//default controller
-		$this->controller = 'iamuser/manage_member';
+		$this->controller = 'iamuser/manage_workers';
 		
 		//default upload dir
 		// $this->uploadDir = 'uploads/customer_files/';
@@ -151,6 +151,8 @@ class Manage_member extends CI_Controller
         $data['EventData'] = $this->MemberModel->getData('tbl_event',array('client_id'=>$client_id));
         //define some useful variables for view
         $data['MemberData'] = $MemberData;  
+
+        $data['MemberData']['status'] = "Active";
         $data['listURL'] = base_url().$this->controller;
         $data['addURL'] = base_url().$this->controller.'/add';
         $data['editURL'] = base_url().$this->controller.'/edit/{ID}';
@@ -162,7 +164,7 @@ class Manage_member extends CI_Controller
         
         //load users list view
 
-        $this->data['maincontent'] = $this->load->view('iamuser/manage_member/index', $data, true);
+        $this->data['maincontent'] = $this->load->view('iamuser/manage_workers/index', $data, true);
         $this->load->view($this->layout, $this->data);
     }
 
@@ -219,14 +221,16 @@ class Manage_member extends CI_Controller
         $data['searchKeyword'] = $this->session->userdata('userSearchKeyword');
         
         //define some useful variables for view
-        $data['MemberData'] = $MemberData;        
+        $data['MemberData'] = $MemberData; 
+        
+        $data['MemberData']['status'] = "Active";       
         $data['ClientMACIdData'] = $this->MemberModel->getData('tbl_devices',array('client_id'=>$client_id));
         $data['EventData'] = $this->MemberModel->getData('tbl_event',array());
         $data['listURL'] = base_url().$this->controller;
         $data['action'] = 'Add';
         $data['action_btn'] = 'Add';
         //load the view
-        $this->data['maincontent'] = $this->load->view('iamuser/manage_member/index', $data, true);   
+        $this->data['maincontent'] = $this->load->view('iamuser/manage_workers/index', $data, true);   
         $this->load->view($this->layout, $this->data);     
     }
 
@@ -296,12 +300,13 @@ class Manage_member extends CI_Controller
         //define some useful variables for view
         $data['MemberData'] = $MemberData;   
         $data['ClientMACIdData'] = $this->MemberModel->getData('tbl_devices',array('client_id'=>$client_id));
-        $data['EventData'] = $this->MemberModel->getData('tbl_event',array());
+        $data['EventData'] = $this->MemberModel->getData('tbl_event',array('client_id'=>$client_id));
         $data['listURL'] = base_url().$this->controller;
         $data['action'] = 'Edit';
         $data['action_btn'] = 'Update';
+        $data['MemberData']['status'] = "Active";
         //load the view
-        $this->data['maincontent'] = $this->load->view('iamuser/manage_member/edit-member', $data, true);   
+        $this->data['maincontent'] = $this->load->view('iamuser/manage_workers/edit-member', $data, true);   
         $this->load->view($this->layout, $this->data);     
     }
 

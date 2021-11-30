@@ -106,13 +106,23 @@ class Home extends CI_Controller {
         $conditions['start'] = $offset;
         $conditions['limit'] = $this->perPage;
         $conditions['conditions'] = array('tbl_event.client_id'=>$client_id);
-        $data['EventDataList'] = $this->EventModel->getRows($conditions);
+
+        $newDat = $this->EventModel->getEventWithId($client_id);
+
+
+        // $data['EventDataList'] = $this->EventModel->getRows($conditions);
+
         // echo "<pre>";
         // print_r($data['EventDataList']);
         // exit;
+        $data['EventDataList'] = $this->EventModel->getEventWithId($client_id);
+        
 
         //if add request is submitted
         if($this->input->post('userSubmit')){
+
+
+            
             //form field validation rules   
             $evName = $this->input->post('event_name');     
             foreach($evName as $ind=>$val) 
@@ -121,8 +131,8 @@ class Home extends CI_Controller {
             $this->form_validation->set_rules('location['.$ind.']', 'Location', 'required|trim');          
             $this->form_validation->set_rules('description['.$ind.']', 'Description', 'required|trim');          
             $this->form_validation->set_rules('group['.$ind.']', 'Group', 'required|trim');          
-            $this->form_validation->set_rules('from_device_id['.$ind.']', 'Device Id', 'required|trim');          
-            $this->form_validation->set_rules('to_device_id['.$ind.']', 'Device Id', 'required|trim');          
+            // $this->form_validation->set_rules('from_device_id['.$ind.']', 'Device Id', 'required|trim');          
+            // $this->form_validation->set_rules('to_device_id['.$ind.']', 'Device Id', 'required|trim');          
             
             $this->form_validation->set_rules('start_date['.$ind.']', 'Start Date', 'required|trim');          
             $this->form_validation->set_rules('end_date['.$ind.']', 'End Date', 'required|trim');          
@@ -137,23 +147,30 @@ class Home extends CI_Controller {
 
             $arrCount = 0;
             $EventData = array();
+            $count = 0;
+        //     echo "<pre>";
+        // print_r($this->input->post('assigning'));
+        // exit;
+
             foreach($this->input->post("event_name") as $e){
-            $EventData[$arrCount] = array(
-                'client_id' => $client_id,                
-                'event_name' => $post['event_name'][$arrCount],                
-                'description' => $post['description'][$arrCount],                
-                'location' => $post['location'][$arrCount],                
-                'group_id' => $post['group'][$arrCount],                
-                'from_device_id' => $post['from_device_id'][$arrCount],                
-                'to_device_id' => $post['to_device_id'][$arrCount],                                             
-                'start_date' => date("Y-m-d", strtotime($post['start_date'][$arrCount])),
-                'end_date' => date("Y-m-d", strtotime($post['end_date'][$arrCount])),                
-                'start_time' => date("H:i", strtotime($post['start_time'][$arrCount])),                
-                'end_time' => date("H:i", strtotime($post['end_time'][$arrCount])),                
-                'time_zone' => $post['time_zone'][$arrCount]
-            ); 
-            // $this->EventModel->insert($EventData);
-            ++$arrCount;  
+                foreach($this->input->post('assigning['.$arrCount.']') as $s){
+                    $EventData[$count] = array(
+                        'client_id' => $client_id,                
+                        'event_name' => $post['event_name'][$arrCount],                
+                        'description' => $post['description'][$arrCount],                
+                        'location' => $post['location'][$arrCount],                
+                        'group_id' => $post['group'][$arrCount],                
+                        'from_device_id' => $s,                
+                        'to_device_id' => $s,                                             
+                        'start_date' => date("Y-m-d", strtotime($post['start_date'][$arrCount])),
+                        'end_date' => date("Y-m-d", strtotime($post['end_date'][$arrCount])),                
+                        'start_time' => date("H:i", strtotime($post['start_time'][$arrCount])),                
+                        'end_time' => date("H:i", strtotime($post['end_time'][$arrCount])),                
+                        'time_zone' => $post['time_zone'][$arrCount]
+                    ); 
+                    ++$count;
+                }
+            ++$arrCount; 
         }
         
             
@@ -193,7 +210,6 @@ class Home extends CI_Controller {
             // exit();
             if($this->form_validation->run() == true){  
                 $insert_ID = $this->db->insert_batch('tbl_event', $EventData); 
-                // $insert_ID = $this->EventModel->insert($EventData);
                 if($insert_ID){
                     $this->session->set_userdata('success_msg', 'Event has been added successfully.');
                     redirect($this->controller);
@@ -205,11 +221,10 @@ class Home extends CI_Controller {
         }
 
         $data['EventData'] = $EventData;   
-        $data['ClientMACIdData'] = $this->EventModel->getData('tbl_devices',array('client_id'=>$client_id));
-        $data['TimeZoneList'] = $this->EventModel->getData('tbl_timezone',array());
-       // $data['GroupsData'] = $this->EventModel->getData('tbl_groups',array());
+        $data['ClientMACIdData'] = $this->EventModel->getDevicesNotAssigned($client_id);
        $data['GroupsData'] = $this->EventModel->getData('tbl_groups',array('client_id'=>$client_id));
 
+       $data['TimeZoneList'] = $this->EventModel->getData('tbl_timezone',array());
                 $Condition = array();
                 $Condition['select'] = 'tbl_temperature_logs.device_mac_id,tbl_temperature_logs.device_id,tbl_temperature_logs.client_id,tbl_temperature_logs.temperature,tbl_temperature_logs.location,tbl_temperature_logs.lat,tbl_temperature_logs.lon,tbl_temperature_logs.token,tbl_temperature_logs.date_time,tbl_event.event_name,tbl_event.description,tbl_event.from_device_id,tbl_event.to_device_id';              
                 $Condition['where'] = array("tbl_temperature_logs.client_id"=>$client_id);

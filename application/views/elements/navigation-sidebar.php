@@ -16,14 +16,14 @@
 		</li>
 
 
-		<!-- <li class="treeview <?php echo ($this->uri->segment(2) == 'manage_member' )?'active':''; ?>">
-			<a href="<?php echo base_url('admin/manage_member'); ?>">
+		<!-- <li class="treeview <?php echo ($this->uri->segment(2) == 'manage_workers' )?'active':''; ?>">
+			<a href="<?php echo base_url('admin/manage_workers'); ?>">
 				<i class="fa fa-user "></i> <span>Members</span>
 			</a>
 		</li> -->
 
         
-            <li class="<?php echo ($this->uri->segment(3) == 'viewFixUnit' || $this->uri->segment(3) == 'addFixUnit' )?'active':''; ?>"><a href="<?php echo base_url('admin/manage_member/viewFixUnit'); ?>"><i class="fa fa-user"></i> Members</a></li>
+            <li class="<?php echo ($this->uri->segment(3) == 'viewFixUnit' || $this->uri->segment(3) == 'addFixUnit' )?'active':''; ?>"><a href="<?php echo base_url('admin/manage_workers/viewFixUnit'); ?>"><i class="fa fa-user"></i> Members</a></li>
                     
          
       

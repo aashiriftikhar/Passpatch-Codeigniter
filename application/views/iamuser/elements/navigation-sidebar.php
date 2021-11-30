@@ -15,9 +15,9 @@
 			</a>
 		</li>
         
-        <li class="<?php echo ($this->uri->segment(2) == 'manage_member')?'active':''; ?>">
-        	<a href="<?php echo base_url('iamuser/manage_member'); ?>">
-        		<i class="fa fa-user"></i> <span>Members</span>
+        <li class="<?php echo ($this->uri->segment(2) == 'manage_workers')?'active':''; ?>">
+        	<a href="<?php echo base_url('iamuser/manage_workers'); ?>">
+        		<i class="fa fa-user"></i> <span>Workers or Patients</span>
         	</a>
     	</li>
 

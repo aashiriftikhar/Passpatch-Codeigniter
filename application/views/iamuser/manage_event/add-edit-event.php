@@ -133,73 +133,26 @@
               </div>
               <div class="col-md-6 form-group">
                 <label for="name">Select Device ID Range</label>
-                <div class="row">
-                  <div class="col-md-5">
-                    <select class="form-control" name="from_device_id">
-                      <option value="">Select</option>
-                      <?php foreach ($ClientMACIdData as $key => $value) : ?>
-                      <option <?php if(!empty($EventData['from_device_id'])){ echo ($EventData['from_device_id']==$value['id'])? "selected": ""; } ?> value="<?= $value['id']?>"><?= $value['device_id']?></option>
-                      
- 								<?php endforeach; ?>
-                    </select>
-                    <?php echo form_error('from_device_id','<p class="help-block error">','</p>'); ?>
-                  </div>
-                  <div class="col-xs-1">
-                    <label>To</label>
-                  </div>
-                  <div class="col-md-5">
-                    <select class="form-control" name="to_device_id">
-                      <option value="">Select</option>
-                      <?php foreach ($ClientMACIdData as $key => $value): ?>
-                      <option <?php if(!empty($EventData['to_device_id'])){ echo ($EventData['to_device_id']==$value['id'])? "selected": ""; } ?> value="<?= $value['id']?>"><?= $value['device_id']?></option>
-                      
- 								<?php endforeach; ?>
-                    </select>
-                    <?php echo form_error('to_device_id','<p class="help-block error">','</p>'); ?>
-                  </div>
-                </div>
-              </div>
+                
+<div class="row">
+<div style="height:120px;width:320px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+<?php if (isset($ClientMACIdData))
+foreach ($ClientMACIdData as $key => $value) : ?>
+
+<input type="checkbox" name="assigning[]" value="<?php echo $value['id']; ?>">
+<?php echo $value['id']."-".$value['device_id']; ?>
+</br>
+<?php endforeach; ?>
+</div>
+  </div>
+</div>
             </div>
             <div class="row">
-              <div class="col-md-3	">
-                <div class="form-group">
-                  <label for="exampleInputFile">Image</label>
-                  <input type="file" id="file-input" name="image" accept="image/png,image/gif,image/jpeg" >
-                </div>
-                <!-- leftbox -->										
+            <div class="col-md-2">
+              <div class="form-group" style="margin-top: 20px">
+                <input type="submit" name="userSubmit" class="btn btn-primary" value="Submit" />
               </div>
-              <div class="col-md-1">
-                <div class="imgbox-2">
-                  <div class="result">
-                    <?php if(!empty($EventData['image'])){ ?>   
-                    <img src="<?php echo base_url('uploads/event_image/').$EventData['image'] ?>" id='image' >
-                    <?php }elseif($action == 'Edit'){?>   
-
-                    <img src="<?php echo base_url('assets/no_image.png') ?>" id='image' >
-                    <?php }?>   
-                  </div>
-                </div>
-                <!--rightbox-->
-                <div class="imgbox-2 img-result hide">
-                  <!-- result of crop -->
-                  <img class="cropped" src="" alt="">
-                </div>
-                <!-- input file -->
-                <div class="imgbox">
-                  <div class="options hide">                            
-                  </div>
-                  <!-- save btn -->
-                  <button class="btn savebtn hide">Done</button>
-                  <!-- download btn -->
-                  <!-- <a href="" class="btn download hide">Download</a> -->
-                </div>
-              </div>
-              <div class="col-md-2" style="margin-bottom: -20px!important;">
-                <div class="form-group" style="margin-top: 20px">
-                  <label>  </label>
-                  <input type="submit" name="userSubmit" class="btn btn-primary  btn-modify pull-right" value="<?php echo $action_btn; ?>"/>
-                </div>
-              </div>
+            </div>
             </div>
           </div>
         </form>

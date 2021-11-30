@@ -101,7 +101,7 @@ class Manage_event extends CI_Controller
         $conditions['start'] = $offset;
         $conditions['limit'] = $this->perPage;
         $conditions['conditions'] = array('tbl_event.client_id'=>$client_id);
-        $data['EventDataList'] = $this->EventModel->getRows($conditions);
+        $data['EventDataList'] = $this->EventModel->getEventWithId($client_id);
         // echo "<pre>";
         // print_r($data['EventDataList']);
         // exit;
@@ -165,9 +165,7 @@ class Manage_event extends CI_Controller
             $this->form_validation->set_rules('event_name', 'Event Name', 'required|trim');          
             $this->form_validation->set_rules('location', 'Location', 'required|trim');          
             $this->form_validation->set_rules('description', 'Description', 'required|trim');          
-            $this->form_validation->set_rules('group', 'Group', 'required|trim');          
-            $this->form_validation->set_rules('from_device_id', 'Device Id', 'required|trim');          
-            $this->form_validation->set_rules('to_device_id', 'Device Id', 'required|trim');          
+            $this->form_validation->set_rules('group', 'Group', 'required|trim');                 
             
             $this->form_validation->set_rules('start_date', 'Start Date', 'required|trim');          
             $this->form_validation->set_rules('end_date', 'End Date', 'required|trim');          
@@ -178,58 +176,46 @@ class Manage_event extends CI_Controller
 
             
             $post =  $this->security->xss_clean($this->input->post());  
-            $EventData = array(
-            	'client_id' => $client_id,
-                'event_name' => $post['event_name'],                
-                'description' => $post['description'],                
-                'location' => $post['location'],                
-                'group_id' => $post['group'],                
-                'from_device_id' => $post['from_device_id'],                
-                'to_device_id' => $post['to_device_id'],                                             
-                'start_date' => date("Y-m-d", strtotime($post['start_date'])),
-                'end_date' => date("Y-m-d", strtotime($post['end_date'])),                
-                'start_time' => date("H:i", strtotime($post['start_time'])),                
-                'end_time' => date("H:i", strtotime($post['end_time'])),                
-                'time_zone' => $post['time_zone']
-            );      
+            // $EventData = array(
+            // 	'client_id' => $client_id,
+            //     'event_name' => $post['event_name'],                
+            //     'description' => $post['description'],                
+            //     'location' => $post['location'],                
+            //     'group_id' => $post['group'],                
+            //     'from_device_id' => $post['from_device_id'],                
+            //     'to_device_id' => $post['to_device_id'],                                             
+            //     'start_date' => date("Y-m-d", strtotime($post['start_date'])),
+            //     'end_date' => date("Y-m-d", strtotime($post['end_date'])),                
+            //     'start_time' => date("H:i", strtotime($post['start_time'])),                
+            //     'end_time' => date("H:i", strtotime($post['end_time'])),                
+            //     'time_zone' => $post['time_zone']
+            // );
+            $EventData = array();
+            $count = 0;
 
-
-
-
-                if(isset($_FILES['image']['name']) && $_FILES['image']['name']!=""){
-                    
-                    //upload configuration
-                    $targetDir = $this->uploadDir;
-                    $config['upload_path']   = $targetDir;
-                    $config['allowed_types'] = 'gif|jpg|png|pdf';
-                    $this->load->library('upload', $config);
-                    
-                    //if picture upload is successful
-                    if($this->upload->do_upload('image')){
-                        //load upload helper
-                        $this->load->helper('upload');
-                        
-                        //uploaded file data
-                        $uploadData = $this->upload->data();
-                        
-                        //thumbnail creation
-                        $uploadedFile = $uploadData['file_name'];
-                        $sourceImage = $targetDir.$uploadedFile;
-                        $thumbPath = $targetDir."thumb/";
-                        create_thumb($sourceImage, $uploadedFile, $thumbPath, 50, 50);
-                        
-                        //uploaded picture name
-                        $EventData['image'] = $uploadedFile;
-                    }else{
-                            $data['error_msg'] = $this->upload->display_errors();
-                    }
-                }   
+            foreach($this->input->post('assigning') as $s){
+                $EventData[$count] = array(
+                    'client_id' => $client_id,                
+                    'event_name' => $post['event_name'],                
+                    'description' => $post['description'],                
+                    'location' => $post['location'],                
+                    'group_id' => $post['group'],                
+                    'from_device_id' => $s,                
+                    'to_device_id' => $s,                                             
+                    'start_date' => date("Y-m-d", strtotime($post['start_date'])),
+                    'end_date' => date("Y-m-d", strtotime($post['end_date'])),                
+                    'start_time' => date("H:i", strtotime($post['start_time'])),                
+                    'end_time' => date("H:i", strtotime($post['end_time'])),                
+                    'time_zone' => $post['time_zone']
+                ); 
+                ++$count;
+            }
 
 
             // print_r($EventData);
             // exit();
             if($this->form_validation->run() == true){   
-                $insert_ID = $this->EventModel->insert($EventData);
+                $insert_ID = $this->db->insert_batch('tbl_event', $EventData); 
                 if($insert_ID){
                     $this->session->set_userdata('success_msg', 'Event has been added successfully.');
                     redirect($this->controller);
@@ -243,9 +229,10 @@ class Manage_event extends CI_Controller
 
 
         $data['EventData'] = $EventData;   
-        $data['ClientMACIdData'] = $this->EventModel->getData('tbl_devices',array('client_id'=>$client_id));
+        $data['ClientMACIdData'] = $this->EventModel->getDevicesNotAssigned($client_id);
+        
         $data['TimeZoneList'] = $this->EventModel->getData('tbl_timezone',array());
-        $data['GroupsData'] = $this->EventModel->getData('tbl_groups',array());
+        $data['GroupsData'] = $this->EventModel->getData('tbl_groups',array('client_id'=>$client_id));
         //define some useful variables for view
         $data['listURL'] = base_url().$this->controller;
         $data['addURL'] = base_url().$this->controller.'/add';
@@ -336,35 +323,7 @@ class Manage_event extends CI_Controller
 
 
 
-
-                if(isset($_FILES['image']['name']) && $_FILES['image']['name']!=""){
-                    
-                    //upload configuration
-                    $targetDir = $this->uploadDir;
-                    $config['upload_path']   = $targetDir;
-                    $config['allowed_types'] = 'gif|jpg|png|pdf';
-                    $this->load->library('upload', $config);
-                    
-                    //if picture upload is successful
-                    if($this->upload->do_upload('image')){
-                        //load upload helper
-                        $this->load->helper('upload');
-                        
-                        //uploaded file data
-                        $uploadData = $this->upload->data();
-                        
-                        //thumbnail creation
-                        $uploadedFile = $uploadData['file_name'];
-                        $sourceImage = $targetDir.$uploadedFile;
-                        $thumbPath = $targetDir."thumb/";
-                        create_thumb($sourceImage, $uploadedFile, $thumbPath, 50, 50);
-                        
-                        //uploaded picture name
-                        $EventData['image'] = $uploadedFile;
-                    }else{
-                            $data['error_msg'] = $this->upload->display_errors();
-                    }
-                }   
+  
 
 
             if($this->form_validation->run() == true){     
@@ -404,9 +363,8 @@ class Manage_event extends CI_Controller
 
         $client_id = $this->session->userdata('ClientId');
         $data['EventData'] = $EventData;   
-        $data['ClientMACIdData'] = $this->EventModel->getData('tbl_devices',array('client_id'=>$client_id));
-        $data['TimeZoneList'] = $this->EventModel->getData('tbl_timezone',array());
-        $data['GroupsData'] = $this->EventModel->getData('tbl_groups',array());
+        $data['ClientMACIdData'] = $this->EventModel->getDevicesNotAssigned($client_id);
+        $data['GroupsData'] = $this->EventModel->getData('tbl_groups',array('client_id'=>$client_id));
         //define some useful variables for view
 
         if ($redirect=='event') 
@@ -430,6 +388,7 @@ class Manage_event extends CI_Controller
         $data['action_btn'] = 'Update';
         
        
+        $data['TimeZoneList'] = $this->EventModel->getData('tbl_timezone',array());
 
         //load the view
         $this->data['maincontent'] = $this->load->view('iamuser/manage_event/add-edit-event', $data, true);   

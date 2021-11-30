@@ -127,6 +127,24 @@ class EventModel extends CI_Model{
 		return $delete?true:false;
 	}
 
+	public function getEventWithId($id){
+		$sql = "SELECT t1.*,`t2`.`device_id` FROM `tbl_event` as `t1` JOIN `tbl_devices` as `t2` ON `t2`.`id`=`t1`.`from_device_id` WHERE `t1`.`client_id` = ?";
+		// $this->db->select('*');
+		// $this->db->from("tbl_event as t1");
+		// $this->db->where("t1.client_id",$id);
+		// $this->db->join("tbl_devices as t2","t2.id=t1.from_device_id");
+
+        $query = $this->db->query($sql,$id);       
+        return $query->result_array();
+	}
+
+
+	public function getDevicesNotAssigned($id){
+		$sql = "SELECT `t1`.`device_id`,`t1`.`id`,`t1`.`client_id` FROM `tbl_devices` as `t1` LEFT JOIN `tbl_event` as `t2` on `t2`.`from_device_id`=`t1`.`id`  WHERE `t2`.`from_device_id` IS NULL AND `t1`.`client_id`=?";
+        $query = $this->db->query($sql,$id);       
+        return $query->result_array();
+
+	}
 
 	
 	/* Update admin user data */
