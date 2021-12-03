@@ -21,8 +21,8 @@ class Notification extends REST_Controller
 
     public function saveTemperature_post()
     {
-        if (keyAuth() == TRUE)
-        {       
+        // if (keyAuth() == TRUE)
+        // {       
             $data = $this->post();      
             $this->form_validation->set_data($data);
             // Validations   
@@ -107,19 +107,19 @@ class Notification extends REST_Controller
                     $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_MAC_ID, "result" => new stdClass()); 
                 }            
             }
-        }
-        else
-        {
-            $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_API_KEY, "result" => new stdClass());
-        }
+        // }
+        // else
+        // {
+        //     $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_API_KEY, "result" => new stdClass());
+        // }
         
         $this->response($responcearray, REST_Controller::HTTP_OK);
     } 
 
     public function NotificationList_post()
     {
-        if (keyAuth() == TRUE)
-        {       
+        // if (keyAuth() == TRUE)
+        // {       
             $data = $this->post();      
             $this->form_validation->set_data($data);
             // Validations   
@@ -161,19 +161,19 @@ class Notification extends REST_Controller
                     $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_MAC_ID, "result" => new stdClass()); 
                 }    
             }
-        }
-        else
-        {
-            $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_API_KEY, "result" => new stdClass());
-        }
+        // }
+        // else
+        // {
+        //     $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_API_KEY, "result" => new stdClass());
+        // }
         
         $this->response($responcearray, REST_Controller::HTTP_OK);
     }
 
     public function connectDevice_post()
     {
-        if (keyAuth() == TRUE)
-        {       
+        // if (keyAuth() == TRUE)
+        // {       
             $data = $this->post();      
             $this->form_validation->set_data($data);
 
@@ -281,19 +281,19 @@ class Notification extends REST_Controller
                     $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_MAC_ID, "result" => new stdClass()); 
                 }                      
             }
-        }
-        else
-        {
-            $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_API_KEY, "result" => new stdClass());
-        }
+        // }
+        // else
+        // {
+        //     $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_API_KEY, "result" => new stdClass());
+        // }
         
         $this->response($responcearray, REST_Controller::HTTP_OK);
     }
 
     public function logout_post()
     {
-        if (keyAuth() == TRUE)
-        {       
+        // if (keyAuth() == TRUE)
+        // {       
             $data = $this->post();      
             $this->form_validation->set_data($data);
             // Validations   
@@ -325,11 +325,11 @@ class Notification extends REST_Controller
                     $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::WENTWRONG, "result" => new stdClass()); 
                 }                              
             }
-        }
-        else
-        {
-            $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_API_KEY, "result" => new stdClass());
-        }
+        // }
+        // else
+        // {
+        //     $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_API_KEY, "result" => new stdClass());
+        // }
         
         $this->response($responcearray, REST_Controller::HTTP_OK);
     }
