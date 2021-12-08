@@ -252,7 +252,7 @@ class Notification extends REST_Controller
                     $Condition1['select'] = 'id,client_id';
                     $Condition1['group_by'] = array();
                     $Condition1['join'] = array();
-                    $Condition1['where'] = array('from_device_id' => $data['client_id']);
+                    $Condition1['where'] = array('from_device_id' => $response['id']);
                     $response =  $this->_getdata('tbl_event',$Condition1);
                     if($response){
                     $postData = array(
@@ -264,8 +264,8 @@ class Notification extends REST_Controller
                         "floor_number" => '0',
                         "building_number" => '0',
                         "status" => 'Active',
-                        "created_date" => Date('Y-m-d h:i:s'),
-                        "updated_date" => Date('Y-m-d h:i:s')
+                        "created_at" => Date('Y-m-d h:i:s'),
+                        "updated_at" => Date('Y-m-d h:i:s')
                     );
 
 
@@ -298,12 +298,11 @@ class Notification extends REST_Controller
 
                         $parms = array(
                             "profile_name" => $ClientData['profile_name'],
-                            "member_name" => $response['member_name'],
                             "device_mac_id" => $data['device_mac_id'],
                             "device_id" => $data['device_id']
                         );
 
-                        $body = $this->load->view('emailTemplate/new-device', $parms, True);
+                        $body = $this->load->view('emailTemplate/new-device-nomember', $parms, True);
 
 
                         $mail = Send_Mail($to, $from_email, $body, $subject);
