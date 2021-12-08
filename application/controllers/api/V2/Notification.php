@@ -253,7 +253,7 @@ class Notification extends REST_Controller
                     $Condition1['group_by'] = array();
                     $Condition1['join'] = array();
                     $Condition1['where'] = array('from_device_id' => $data['client_id']);
-                    $response =  $this->_getdata('tbl_events',$Condition1);
+                    $response =  $this->_getdata('tbl_event',$Condition1);
                     if($response){
                     $postData = array(
                         "client_id" => $response['client_id'],
