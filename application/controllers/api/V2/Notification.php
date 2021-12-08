@@ -216,7 +216,6 @@ class Notification extends REST_Controller
 
                 if ($response) 
                 {
-
                     if (isset($checkStatus['status']) && $checkStatus['status']==0 ) 
                     {
                         $postData = array(  
@@ -278,7 +277,78 @@ class Notification extends REST_Controller
                 }
                 else
                 {
-                    $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_MAC_ID, "result" => new stdClass()); 
+
+                $Condition = array();
+                $Condition['select'] = 'id';
+                $Condition['group_by'] = array();
+                $Condition['join'] = array();
+                $Condition['where'] = array('device_id'=>$data['device_mac_id']);
+                $response = $this->_getdata('tbl_devices',$Condition);
+
+
+                $postData = array(
+                    "client_id"=>$response['client_id'], 
+                    "event_id"=>$response['id'],              
+                    "device_mac_id"=>$data['device_id'],                     
+                    "member_name"=>'NotAssigned',       
+                    "room_number"=>'0',                 
+                    "floor_number"=>'0',                
+                    "building_number"=>'0',             
+                    "status"=>'Active',                                   
+                    "created_date"=>Date('Y-m-d h:i:s'),                 
+                    "updated_date"=>Date('Y-m-d h:i:s')
+                    ); 
+
+
+   $this->db->insert('tbl_members', $postData);
+   $insert_id = $this->db->insert_id();
+
+   $postData = array(
+    "client_id"=>$response['client_id'],                     
+    "member_id"=>$insert_id,                     
+    "device_id"=>$data['device_id'],                     
+    "device_mac_id"=>$data['device_mac_id'],       
+    "status"=>'1',                                   
+    "created_date"=>Date('Y-m-d h:i:s')
+    ); 
+
+    $action = $this->_insertdata('tbl_device_register', $postData);
+
+    if ($action) 
+    {
+        $Condition = array();
+        $Condition['select'] = 'email,profile_name';
+        $Condition['group_by'] = array();
+        
+        $Condition['where'] = array('id'=>$response['client_id']);
+        $ClientData = $this->_getdata('tbl_clients',$Condition);
+
+        $to = $ClientData['email'];
+        $subject = 'New Device Registered';
+        $from_email = 'temp@passpatchllc.com';
+
+
+        $parms = array(
+            "profile_name"=>$ClientData['profile_name'],
+            "member_name"=>$response['member_name'],
+            "device_mac_id"=>$data['device_mac_id'],
+            "device_id"=>$data['device_id']
+        );
+
+        $body = $this->load->view('emailTemplate/new-device', $parms , True);  
+
+
+        $mail = Send_Mail($to,$from_email,$body,$subject);
+
+
+        $responcearray = array('status' => 200, "success" => true, "message" =>MY_Controller::DEVICE_CONNECTED, "result" => new stdClass());   
+    }
+    else
+    {
+        $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::WENTWRONG, "result" => new stdClass()); 
+    }
+
+                    // $responcearray = array('status' => 400, "success" => false, "message" => MY_Controller::INVALID_MAC_ID, "result" => new stdClass()); 
                 }                      
             }
         }
