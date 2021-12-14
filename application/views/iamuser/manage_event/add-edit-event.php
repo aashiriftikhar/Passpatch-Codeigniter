@@ -73,7 +73,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="text" class="form-control pull-right datepicker" id="" value="<?php echo !empty($EventData['start_date'])?date("m/d/Y", strtotime($EventData['start_date'])):date('m/d/yy'); ?>" name="start_date" >
+                  <input type="text" class="form-control pull-right datepicker" id="" value="<?php echo !empty($EventData['start_date'])?date("m/d/Y", strtotime($EventData['start_date'])):date('m/d/Y'); ?>" name="start_date" >
                   <?php echo form_error('start_date','<p class="help-block error">','</p>'); ?>
                 </div>
               </div>
@@ -83,7 +83,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="text" class="form-control pull-right datepicker" id="" value="<?php echo !empty($EventData['end_date'])?date("m/d/Y", strtotime($EventData['end_date'])):date('m/d/yy'); ?>" name="end_date">
+                  <input type="text" class="form-control pull-right datepicker" id="" value="<?php echo !empty($EventData['end_date'])?date("m/d/Y", strtotime($EventData['end_date'])):date('m/d/Y'); ?>" name="end_date">
                   <?php echo form_error('end_date','<p class="help-block error">','</p>'); ?>
                 </div>
               </div>

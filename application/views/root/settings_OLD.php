@@ -197,7 +197,7 @@
 							                  <div class="input-group-addon">
 							                    <i class="fa fa-calendar"></i>
 							                  </div>
-							                  <input type="text" class="form-control pull-right datepicker" value="<?= Date('m/d/yy')?>">
+							                  <input type="text" class="form-control pull-right datepicker" value="<?= date('m/d/Y')?>">
 							                </div>
 										</div>
 										<div class="col-md-6">
@@ -206,7 +206,7 @@
 							                  <div class="input-group-addon">
 							                    <i class="fa fa-calendar"></i>
 							                  </div>
-							                  <input type="text" class="form-control pull-right datepicker" value="<?= Date('m/d/yy')?>">
+							                  <input type="text" class="form-control pull-right datepicker" value="<?= date('m/d/Y')?>">
 							                </div>
 										</div>
 									</div>
