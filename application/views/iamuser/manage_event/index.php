@@ -76,8 +76,8 @@
               <td><?= $value['event_name']?></td>
               <td><?= $value['description']?></td>
               <td><?= $value['location']?></td>
-              <td><?= date('m-d-yy', strtotime($value['start_date']))?></td>
-              <td><?= date('m-d-yy', strtotime($value['end_date']))?></td>
+              <td><?= date('m-d-Y', strtotime($value['start_date']))?></td>
+              <td><?= date('m-d-Y', strtotime($value['end_date']))?></td>
               <td><?= date('h:i A', strtotime($value['start_time']))?></td>
               <td><?= date('h:i A', strtotime($value['end_time']))?></td>
               <!-- <td><?php echo  count_GAUnit($value['group_id']); ?></td>
