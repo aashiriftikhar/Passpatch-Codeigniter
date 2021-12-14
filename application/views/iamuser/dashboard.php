@@ -334,7 +334,7 @@
 foreach ($ClientMACIdData as $key => $value) : ?>
 
 <input type="checkbox" name="assigning[0][]" value="<?php echo $value['id']; ?>">
-<?php echo $value['id']."-".$value['device_id']; ?>
+<?php echo $value['device_id']; ?>
 </br>
 <?php endforeach; ?>
 </div>

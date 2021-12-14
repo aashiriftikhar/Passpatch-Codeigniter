@@ -234,13 +234,13 @@ class Home extends CI_Controller {
                 $Condition['order_by'] = 'DESC';
                 $Condition['order_by_index'] ='tbl_temperature_logs.id'; 
                 $EventAlertData = $this->Common_model->getdataAll('tbl_temperature_logs',$Condition);  
-			    //var_dump($EventAlertData);
+			    // var_dump($EventAlertData);
                 $getEvent = array();
 
                 foreach ($EventAlertData as $key => $value) {
-                    if(getAssign_MACID_Event($value['from_device_id'],$value['to_device_id'],$value['device_mac_id'])==0)
+                    if(getAssign_MACID_Event($value['from_device_id'],$value['to_device_id'],$value['device_mac_id'])==true)
                         {
-                             $getEvent[] = $value;
+                            $getEvent[] = $value;
                         }
                 }
 				
@@ -249,6 +249,9 @@ class Home extends CI_Controller {
 
        
 
+        //         echo "<pre>";
+        // print_r($getEvent);
+        // exit;
         $data['EventAlertData'] = $getEvent;   
         
 

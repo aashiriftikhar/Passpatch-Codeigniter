@@ -131,7 +131,7 @@
                   <?php echo form_error('description','<p class="help-block error">','</p>'); ?>	
                 </div>
               </div>
-              <div class="col-md-6 form-group">
+              <!-- <div class="col-md-6 form-group">
                 <label for="name">Select Device ID Range</label>
                 
 <div class="row">
@@ -140,12 +140,12 @@
 foreach ($ClientMACIdData as $key => $value) : ?>
 
 <input type="checkbox" name="assigning[]" value="<?php echo $value['id']; ?>">
-<?php echo $value['id']."-".$value['device_id']; ?>
+<?php echo $value['device_id']; ?>
 </br>
 <?php endforeach; ?>
 </div>
   </div>
-</div>
+</div> -->
             </div>
             <div class="row">
             <div class="col-md-2">
