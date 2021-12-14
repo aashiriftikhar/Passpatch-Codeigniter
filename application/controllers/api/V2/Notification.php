@@ -258,7 +258,7 @@ class Notification extends REST_Controller
                     $postData = array(
                         "client_id" => $response['client_id'],
                         "event_id" => $response['id'],
-                        "device_mac_id" => $data['device_id'],
+                        "device_mac_id" => $data['device_mac_id'],
                         "member_name" => 'NotAssigned',
                         "room_number" => '0',
                         "floor_number" => '0',

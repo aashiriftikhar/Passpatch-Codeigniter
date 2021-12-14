@@ -132,7 +132,7 @@ if (!empty($error_msg)) {
 
 
 												<input type="checkbox" value="<?php echo $service->device_id; ?>" name="assigning[]">
-												<?php echo $service->id . "-" . $service->device_id; ?>
+												<?php echo $service->device_id; ?>
 
 												<!-- <?php echo form_checkbox('device[]', $service->id, set_checkbox('device', $service->id)); ?> <?php echo $service->id . "-" . $service->device_id; ?> <br /> -->
 

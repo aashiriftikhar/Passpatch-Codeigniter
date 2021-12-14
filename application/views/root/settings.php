@@ -71,10 +71,10 @@
  								<?php if (isset($allDevices))
 										foreach ($allDevices as $service) : ?>
  									<!-- <input type="checkbox" value="'.$service->id.'" name="services[]">
- 									<?php echo $service->id."-".$service->device_id; ?> -->
+ 									<?php echo $service->device_id; ?> -->
 
       <input type="checkbox" name="mycheck[]" value="<?php echo $service->id; ?>">
-	  <?php echo $service->id."-".$service->device_id; ?>
+	  <?php echo $service->device_id; ?>
 										</br>
  								<?php endforeach; ?>
 										 </div>

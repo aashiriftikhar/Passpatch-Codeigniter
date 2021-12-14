@@ -322,7 +322,7 @@
 						  <div style="height:120px;width:320px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
  								<?php if (isset($allDevices))
 										foreach ($allDevices as $service) : ?>
- 									<?php echo $service->id."-".$service->device_id; ?>
+ 									<?php echo $service->device_id; ?>
 										</br>
  								<?php endforeach; ?>
 										 </div>
