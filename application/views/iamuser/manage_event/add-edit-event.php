@@ -131,7 +131,7 @@
                   <?php echo form_error('description','<p class="help-block error">','</p>'); ?>	
                 </div>
               </div>
-              <?php if(!empty($EventData['time_zone'])) : ?>
+              <?php if(empty($EventData['time_zone'])) : ?>
               <div class="col-md-6 form-group">
                 <label for="name">Select Device ID Range</label>
                 
