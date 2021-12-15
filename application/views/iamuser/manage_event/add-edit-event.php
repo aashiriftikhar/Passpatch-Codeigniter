@@ -131,7 +131,8 @@
                   <?php echo form_error('description','<p class="help-block error">','</p>'); ?>	
                 </div>
               </div>
-              <!-- <div class="col-md-6 form-group">
+              <?php if(!empty($EventData['time_zone'])) : ?>
+              <div class="col-md-6 form-group">
                 <label for="name">Select Device ID Range</label>
                 
 <div class="row">
@@ -145,8 +146,10 @@ foreach ($ClientMACIdData as $key => $value) : ?>
 <?php endforeach; ?>
 </div>
   </div>
-</div> -->
+</div>
             </div>
+            
+<?php endif; ?>
             <div class="row">
             <div class="col-md-2">
               <div class="form-group" style="margin-top: 20px">
