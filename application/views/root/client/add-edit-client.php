@@ -303,7 +303,7 @@ if (!empty($error_msg)) {
 				</div>
 			</div>
 
-			<div class="row">
+			<!-- <div class="row">
 				<?php if (empty($ClientData['email'])) : ?>
 					<div class="col-md-4">
 						<div class="form-group">
@@ -315,7 +315,7 @@ if (!empty($error_msg)) {
 				<?php endif; ?>
 
 
-			</div>
+			</div> -->
 			<div class="row">
 				<div class="col-md-12">
 

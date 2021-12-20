@@ -34,6 +34,12 @@ class Settings extends CI_Model{
 		$result = $this->db->get();
 		return $result->result();
 	}
+	
+	public function deleteDevices($idArr){
+		$this->db->where_in('id', $idArr);
+		$delete = $this->db->delete('tbl_inventory');
+		return $delete?true:false;
+	}
 
 	public function addSingleDevice($dev){
 		$data = array(

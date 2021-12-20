@@ -58,6 +58,32 @@ class SettingsRoot extends CI_Controller
         }
     }
 
+    public function deleteBulk(){
+        $this->form_validation->set_rules('mycheck[0]', 'Delete ID', 'required|trim');
+        
+        if ($this->form_validation->run() == true) {
+            $idArr = array();
+            $arrCount=0;
+            $IDs = $this->input->post('mycheck');
+            foreach ($IDs as $s) {
+                $idArr[$arrCount] = $s;
+                $arrCount = $arrCount + 1;
+            }
+            $letsDelete = $this->Settings->deleteDevices($idArr);
+            if($letsDelete){
+                $this->session->set_flashdata('deleted', 'Successfully Deleted.');
+                redirect('root/SettingsRoot/index', 'refresh');
+
+            }
+        }
+        else{
+            echo "<pre>";
+            print_r("asdas");
+            exit;
+
+        }
+    }
+
     //upload mac to inventory
     public function addDeviceToInventory()
     {
@@ -101,6 +127,11 @@ class SettingsRoot extends CI_Controller
             } elseif (!empty($_FILES['file']['name']) && $this->upload->display_errors()) {
                 $data['mac_id_file_error'] = $this->upload->display_errors();
             }
+        }
+        else{
+            $this->session->set_flashdata('success', 'Successfully Added.');
+            redirect('root/SettingsRoot/index', 'refresh');
+
         }
 
 

@@ -164,6 +164,7 @@ class Client extends CI_Controller {
             $this->form_validation->set_rules('contact_title', 'Contact Title', 'required|trim');            
             $this->form_validation->set_rules('notes', 'Notes', 'trim');            
             $this->form_validation->set_rules('status', 'Status', 'required|trim'); 
+            $this->form_validation->set_rules('assigning[0]', 'Status', 'required'); 
             
             $post =  $this->security->xss_clean($this->input->post());
    
@@ -199,25 +200,25 @@ class Client extends CI_Controller {
                 
                 if($insert_ID){     
                     
-
-                    $getDevice = $this->ClientModel->getDevices($post['device_count']);
-                    if($getDevice>0){
-                    $data_toInsert = array();
-                    $arrCount = 0;
-                    $idArr=array();
-                    foreach($getDevice as $device){
-                                $data_toInsert[$arrCount]['device_id']    = $device->device_id;              
-                                $data_toInsert[$arrCount]['client_id']    = $insert_ID;
-                                $data_toInsert[$arrCount]['created_at']    = date("Y-m-d H:i:s");
-                                $idArr[$arrCount] = $device->id;
-                                $arrCount=$arrCount+1;
-                    }
-
-                    $insert = $this->db->insert_batch('tbl_devices', $data_toInsert);
-                    $this->ClientModel->updateDeviceStatus($idArr,"yes");
+                    if(!empty($this->input->post('assigning')))
+                    {
+                       $checked = $this->input->post('assigning');
+                       $arrAdd=array();
+                       $idArr=array();
+                       $count=0;
+                       foreach($checked as $fields){
+                        $arrAdd[$count]['device_id']    = $fields;              
+                        $arrAdd[$count]['client_id']    = $insert_ID;
+                        $arrAdd[$count]['created_at']    = date("Y-m-d H:i:s");
+                        $idArr[$count] = $fields;
+                        $count=$count+1;
+            }
+            
+            $insert = $this->db->insert_batch('tbl_devices', $arrAdd);
+            $this->ClientModel->updateDeviceStatusMac($idArr,"yes");
                         
                         if ($insert){
-                            $total_devices = array('total_devices' =>count($data_toInsert) );
+                            $total_devices = array('total_devices' =>count($arrAdd) );
                             $this->ClientModel->update($total_devices, array('id'=>$insert_ID));
                             @unlink($data['full_path']);
                         }else{
@@ -342,8 +343,7 @@ if ($insert){
             $this->form_validation->set_rules('contact_name', 'Contact Name', 'required|trim');            
             $this->form_validation->set_rules('contact_title', 'Contact Title', 'required|trim');   
             $this->form_validation->set_rules('notes', 'Notes', 'trim');            
-            $this->form_validation->set_rules('status', 'Status', 'required|trim');   
-            $this->form_validation->set_rules('device', 'Devices', 'trim');                 
+            $this->form_validation->set_rules('status', 'Status', 'required|trim');           
            
 
             

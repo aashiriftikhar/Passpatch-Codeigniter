@@ -171,7 +171,8 @@ class Manage_event extends CI_Controller
             $this->form_validation->set_rules('end_date', 'End Date', 'required|trim');          
             $this->form_validation->set_rules('start_time', 'Start Time', 'required|trim');          
             $this->form_validation->set_rules('end_time', 'End Time', 'required|trim');          
-            $this->form_validation->set_rules('time_zone', 'Time Zone', 'required|trim');          
+            $this->form_validation->set_rules('time_zone', 'Time Zone', 'required|trim');       
+            $this->form_validation->set_rules('assigning[0]', 'Assign device', 'required');          
             
 
             
@@ -190,7 +191,13 @@ class Manage_event extends CI_Controller
             //     'end_time' => date("H:i", strtotime($post['end_time'])),                
             //     'time_zone' => $post['time_zone']
             // );
-            $EventData = array();
+            
+
+
+            // print_r($EventData);
+            // exit();
+            if($this->form_validation->run() == true){   
+                $EventData = array();
             $count = 0;
 
             foreach($this->input->post('assigning') as $s){
@@ -210,11 +217,6 @@ class Manage_event extends CI_Controller
                 ); 
                 ++$count;
             }
-
-
-            // print_r($EventData);
-            // exit();
-            if($this->form_validation->run() == true){   
                 $insert_ID = $this->db->insert_batch('tbl_event', $EventData); 
                 if($insert_ID){
                     $this->session->set_userdata('success_msg', 'Event has been added successfully.');
@@ -438,5 +440,3 @@ class Manage_event extends CI_Controller
         
     }
 }
-
-?>

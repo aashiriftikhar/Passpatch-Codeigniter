@@ -328,13 +328,13 @@
 										 </div>
 		                </div>
 		              </div>
-					  <div class="col-md-4">
+					  <!-- <div class="col-md-4">
 		                <div class="form-group">
 		                  <label for="contact_title">Enter number of devices</label>
 		                  <input min="1" max="<?php echo $deviceCount; ?>" type="number" class="form-control" name="device_count" placeholder="Device Count to Assign" value="<?php echo !empty($ClientData['device_count'])?$ClientData['device_count']:''; ?>" >
 		                  <?php echo form_error('contact_title','<p class="help-block error">','</p>'); ?>
 		                </div>
-		              </div>
+		              </div> -->
 					</div>
 		            <div class="row">
 		              <div class="col-md-12">
