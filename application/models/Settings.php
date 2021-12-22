@@ -42,10 +42,13 @@ class Settings extends CI_Model{
 	}
 
 	public function addSingleDevice($dev){
+		$this->db->db_debug = false;
 		$data = array(
 			'device_id' => $dev
 	);
-	$this->db->insert('tbl_inventory', $data);
+	$insertID = $this->db->insert('tbl_inventory', $data);
+	$error = $this->db->error();
+	return $error;
 
 	}
     

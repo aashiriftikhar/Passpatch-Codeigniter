@@ -45,6 +45,13 @@
  												</div>
 
  											<?php } ?>
+ 											<?php if ($this->session->flashdata('notAdded')) { ?>
+ 												<div class="alert alert-error">
+ 													<a href="#" class="close" data-dismiss="alert">&times;</a>
+ 													<strong>Error!</strong><?php echo $this->session->flashdata('notAdded') ?>
+ 												</div>
+
+ 											<?php } ?>
  											<label style="margin-top: 5px">Upload ASCII file serial number or MAC ID</label>
  											<input type="file" name="mac_id_file" id="file" class="input-file" accept=".xls">
  											<label for="file" class="btn btn-tertiary js-labelFile">
@@ -87,6 +94,13 @@
  												<div class="alert alert-success">
  													<a href="#" class="close" data-dismiss="alert">&times;</a>
  													<strong>Success!</strong><?php echo $this->session->flashdata('deleted') ?>
+ 												</div>
+
+ 											<?php } ?>
+ 											<?php if ($this->session->flashdata('deletedFail')) { ?>
+ 												<div class="alert alert-error">
+ 													<a href="#" class="close" data-dismiss="alert">&times;</a>
+ 													<strong>Error!</strong><?php echo $this->session->flashdata('deletedFail') ?>
  												</div>
 
  											<?php } ?>

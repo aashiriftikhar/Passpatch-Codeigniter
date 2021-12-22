@@ -52,9 +52,16 @@ class SettingsRoot extends CI_Controller
 
     public function addSingleDevice(){
         if ( isset($_POST['userSearchMAC'])) {
-            $this->Settings->addSingleDevice($_POST['userSearchMAC']);
+            $error = $this->Settings->addSingleDevice($_POST['userSearchMAC']);
+            if(is_null($error['message'])){
             $this->session->set_flashdata('added', 'Successfully Added.');
             redirect('root/SettingsRoot/index', 'refresh');
+            }
+            else{
+                $this->session->set_flashdata('notAdded', $error['message']);
+                redirect('root/SettingsRoot/index', 'refresh');
+
+            }
         }
     }
 
@@ -73,13 +80,11 @@ class SettingsRoot extends CI_Controller
             if($letsDelete){
                 $this->session->set_flashdata('deleted', 'Successfully Deleted.');
                 redirect('root/SettingsRoot/index', 'refresh');
-
             }
         }
         else{
-            echo "<pre>";
-            print_r("asdas");
-            exit;
+            $this->session->set_flashdata('deletedFail', 'No ID is selected.');
+            redirect('root/SettingsRoot/index', 'refresh');
 
         }
     }
