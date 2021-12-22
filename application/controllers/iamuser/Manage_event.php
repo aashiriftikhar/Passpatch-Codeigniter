@@ -296,9 +296,7 @@ class Manage_event extends CI_Controller
             $this->form_validation->set_rules('event_name', 'Event Name', 'required|trim');          
             $this->form_validation->set_rules('location', 'Location', 'required|trim');          
             $this->form_validation->set_rules('description', 'Description', 'required|trim');          
-            $this->form_validation->set_rules('group', 'Group', 'required|trim');          
-            $this->form_validation->set_rules('from_device_id', 'Device Id', 'required|trim');          
-            $this->form_validation->set_rules('to_device_id', 'Device Id', 'required|trim');          
+            $this->form_validation->set_rules('group', 'Group', 'required|trim');                 
             
             $this->form_validation->set_rules('start_date', 'Start Date', 'required|trim');          
             $this->form_validation->set_rules('end_date', 'End Date', 'required|trim');          
@@ -325,10 +323,11 @@ class Manage_event extends CI_Controller
 
 
 
+
   
 
 
-            if($this->form_validation->run() == true){     
+            if($this->form_validation->run() == true){   
                 $update = $this->EventModel->update($EventData, array('id'=>$id));
                 if($update){
 
