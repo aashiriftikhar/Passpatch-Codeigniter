@@ -84,9 +84,14 @@ class Notification extends REST_Controller
                             "temperature" => $data['temperature']
                         );
 
+                    $str = explode("°",$data["temperature"]);
+
+                    if(($str[0]>100 && $str[1]=="F") || ($str[0]>37 && $str[1]=="C")){
+
                         $body = $this->load->view('emailTemplate/temperature_alert', $parms, True);
 
                         $mail = Send_Mail($to, $from_email, $body, $subject);
+                    }
 
                         $responcearray = array('status' => 200, "success" => true, "message" => MY_Controller::DATA_STORED, "result" => new stdClass());
                     } else {
@@ -130,8 +135,24 @@ class Notification extends REST_Controller
                 $response = $this->CM->getdataAll('tbl_temperature_logs', $Condition);
                 $result = array();
                 foreach ($response as $key => $value) {
+                    $str = explode("°",$value["temperature"]);
+                    if($str[1]=="F"){
+                        if($str[0]>100){
+                        $value['message'] = "Your body temperature is very high please check your temperature.";
+                        }
+                        else{
+                            $value['message'] = "Your body temperature is normal.";
+                        }
+                    }
+                    else{
+                        if($str[0]>37){
+                            $value['message'] = "Your body temperature is very high please check your temperature.";
+                            }
+                            else{
+                                $value['message'] = "Your body temperature is normal.";
+                            }
+                    }
                     $value['date_time'] = date('d-m-Y , h:i A', strtotime($value['date_time']));
-                    $value['message'] = "Your body temperature is very high please check your temperature.";
                     $result[] = $value;
                 }
 

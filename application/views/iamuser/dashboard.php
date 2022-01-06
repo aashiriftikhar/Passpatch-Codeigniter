@@ -152,12 +152,14 @@
 
             if (!empty($EventAlertData)) {
               foreach ($EventAlertData as $key => $value) {
+                $str = explode("°",$value["temperature"]);
             ?>
+            <?php if(($str[0]>100 && $str[1]=="F") || ($str[0]>37 && $str[1]=="C")) : ?>
                 <tr>
                   <td><?= $value['event_name'] ?></td>
 
                   <td><?= $value['device_mac_id'] ?></td>
-                  <td style="color: #f03f3f; font-weight: bold"><?= $value['temperature'] ?></td>
+                  <td style="color: #f03f3f; font-weight: bold"><?= $value["temperature"] ?></td>
                   <td><?= date('m-d-Y', strtotime($value['date_time'])) ?></td>
                   <td><?= date('h:i A', strtotime($value['date_time'])) ?></td>
                   <td>
@@ -171,6 +173,8 @@
                     </a>
                   </td>
                 </tr>
+
+<?php endif; ?>
               <?php }
             } else { ?>
               <tr>
