@@ -163,7 +163,7 @@ class EventModel extends CI_Model{
 
 	public function generateReport($data,$start_date,$end_date){
 		$List = implode(', ', $data);
-		$sql="Select * from tbl_temperature_logs where device_mac_id IN ($List) AND date_time>'$start_date 00:00:00' AND date_time<='$end_date 00:00:00'"; 
+		$sql="Select * from tbl_temperature_logs where device_mac_id IN ($List) AND date_time>='$start_date' AND date_time<='$end_date'"; 
 		  
                
     $query = $this->db->query($sql);
