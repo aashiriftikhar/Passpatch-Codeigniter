@@ -322,10 +322,6 @@ class Home extends CI_Controller
                 
                 $result = $this->EventModel->generateReport($post["assigning"],$post["start_date"],$post["end_date"]);
                
-
-                echo "<pre>";
-                print_r($result);
-                exit;
                 //load xlsx library
 	$this->load->library('Excel');
 	
