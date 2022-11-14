@@ -167,7 +167,7 @@ class EventModel extends CI_Model{
 		  
                
     $query = $this->db->query($sql);
-    return $query->result_array();
+    return $query->result();
 
 	}
 
