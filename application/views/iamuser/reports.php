@@ -8,7 +8,7 @@
 	}
 </style>
 <section class="content-header">
-	<h1>Reports</h1>
+	<h1>Report Generator</h1>
 	<ol class="breadcrumb">
 		<li><a href="<?php echo base_url('iamuser/Home'); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
 		<li><a href="<?php echo ""; ?>"><i class="fa fa-file-text"></i> Reports	</a></li>
@@ -29,52 +29,61 @@
 					<h3 class="box-title">Report Lists</h3>
 					<div class="box-tools ">
 						
-						<div class="input-group input-group-sm" style="width: 350px;">
-							<input type="text" name="userSearchKeyword" placeholder="Enter keywords..." value="" class="form-control pull-right">
-							<div class="input-group-btn">
-								<input type="submit" name="submitSearch" class="btn btn-default" value="SEARCH">
-								<input type="submit" name="submitSearchReset" class="btn btn-default" value="RESET">
-								<!--<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>-->
-							</div>
-						</div>
 						
 					</div>
 				</div>
 				<!-- form start -->
 					<div class="box-body table-responsive no-padding">
-						<table class="table table-hover">
-							<tr>
-								<th>Sr.No.</th>	
-								<th>Company Name</th>
-								<th>Name</th>
-								<th>Temperature</th>
-								<th>Location</th>
-								<th>Date</th>								
-							
-							</tr>        
-							                
-							<tr>			
-								<td>1</td>
-								<td>Test</td>											
-								<td>Jon test</td>																	
-								<td>20</td>											
-								<td>Calafornia</td>									
-								<td>07/25/2020</td>
-																	
-								
-							</tr>
+					
+					<form name="addEvent" method="post" action="generateReport" enctype="multipart/form-data" id="generateReport">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-2">
+                <label>Start Date</label>
+                <div class="input-group date">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right datepicker" id="" value="<?php echo date('Y-m-d'); ?>" name="start_date">
+                  <?php echo form_error('start_date', '<p class="help-block error">', '</p>'); ?>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label>End Date</label>
+                <div class="input-group date">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right datepicker" id="" value="<?php echo date('Y-m-d'); ?>" name="end_date">
+                  <?php echo form_error('end_date', '<p class="help-block error">', '</p>'); ?>
+                </div>
+              </div>
+        
+                  <label for="name">Select Devices</label>
 
-							<tr>			
-								<td>2</td>
-								<td>Demo</td>											
-								<td>bob test</td>											
-								<td>10</td>											
-								<td>NYC</td>
-								<td>06/10/2020</td>
-																										
-								
-							</tr>
-						</table>
+                  <div class="row">
+                    <div style="height:120px;width:320px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+                      <?php if (isset($ClientMACIdData))
+                        foreach ($ClientMACIdData as $key => $value) : ?>
+
+                        <input type="checkbox" name="assigning[]" value="'<?php echo $value['device_id']?>'">
+                        <?php echo $value['device_id']; ?>
+                        </br>
+                      <?php endforeach; ?>
+                    </div>
+                      <?php echo form_error('devices_id', '<p class="help-block error">', '</p>'); ?>
+                  </div>
+                </div>
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group" style="margin-top: 20px">
+                <input type="submit" name="userSubmit" class="btn btn-primary" value="Submit" />
+              </div>
+            </div>
+          </div>
+          </div>
+        </form>
+
 					</div>
 					<div class="box-footer">
 						<ul class="pagination pagination-sm no-margin pull-right">
@@ -85,3 +94,14 @@
 	
 	</div>
 </section>
+<script src="<?= base_url('assets/') ?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="<?= base_url('assets/') ?>plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<script src="<?= base_url('assets/') ?>bower_components/moment/min/moment.min.js"></script>
+<script src="<?= base_url('assets/') ?>bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript">
+  //Date picker
+  $('.datepicker').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd'
+  })
+</script>

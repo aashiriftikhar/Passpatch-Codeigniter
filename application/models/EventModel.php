@@ -158,5 +158,18 @@ class EventModel extends CI_Model{
 		return $update?true:false;
 		
 	}
+
+
+
+	public function generateReport($data,$start_date,$end_date){
+		$List = implode(', ', $data);
+		$sql="Select * from tbl_temperature_logs where device_mac_id IN ($List) AND date_time>'$start_date 00:00:00' AND date_time<='$end_date 00:00:00'"; 
+		  
+               
+    $query = $this->db->query($sql);
+    return $query->result_array();
+
+	}
+
 }
 
