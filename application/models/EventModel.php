@@ -146,6 +146,13 @@ class EventModel extends CI_Model{
 
 	}
 
+	public function getAllDevices($id){
+		$sql = "SELECT `t1`.`device_id`,`t1`.`id`,`t1`.`client_id` FROM `tbl_devices` as `t1`   WHERE `t1`.`client_id`=?";
+        $query = $this->db->query($sql,$id);       
+        return $query->result_array();
+
+	}
+
 	
 	/* Update admin user data */
 	public function update($data = array(), $conditions = array()){

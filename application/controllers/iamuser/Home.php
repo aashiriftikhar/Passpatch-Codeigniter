@@ -284,7 +284,7 @@ class Home extends CI_Controller
 
         $data = array();
         $client_id = $this->session->userdata('ClientId');
-        $data['ClientMACIdData'] = $this->EventModel->getDevicesNotAssigned($client_id);
+        $data['ClientMACIdData'] = $this->EventModel->getAllDevices($client_id);
 
         $data['addURL'] = 'addReport';
 
