@@ -43,7 +43,7 @@
                               <!-- content -->
                               <div class="content-box" style="max-width:600px;margin:0 auto;display:block">                                
                                  <h1 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;margin-bottom:15px;color:#47505E;margin:0px 0 10px;line-height:1.2;font-weight:200;font-size:22px;font-weight:bold;margin-bottom:30px">Hi <?php echo (!empty($profile_name))?$profile_name:""; ?>,</h1>
-                                 <h1 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;margin-bottom:15px;color:#47505E;margin:0px 0 10px;line-height:1.2;font-weight:200;font-size:28px;font-weight:bold;margin-bottom:30px">Temperature Alert</h1>
+                                 <h1 style="font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;margin-bottom:15px;color:#FF0000;margin:0px 0 10px;line-height:1.2;font-weight:200;font-size:28px;font-weight:bold;margin-bottom:30px">Temperature Alert</h1>
                                <center>  <p style="font-weight:normal;padding:0;font-family:&quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height:1.7;margin-bottom:1.3em;font-size:18px;color:#47505E text-align:center;  "></p>
                                  <table>
                                     <tr>

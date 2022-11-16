@@ -349,7 +349,7 @@ class Home extends CI_Controller
 		$writer->writeSheetRow('Sheet1',array($sf->device_mac_id, $sf->temperature, $sf->lat, $sf->lon, $sf->date_time));
 	endforeach;
 	
-	$fileLocation = 'deviceinfo.xlsx';
+	$fileLocation = 'Device_Temperature_History.xlsx';
 	
 	//write to xlsx file
 	$writer->writeToFile($fileLocation);

@@ -78,7 +78,7 @@ class Notification extends REST_Controller
                         $ClientData = $this->_getdata('tbl_clients',$Condition);
 
                         $to = $ClientData['email'];
-                        $subject = 'Device';
+                        $subject = '🚨EMERGENCY🚨';
                         $from_email = 'temp@passpatchllc.com';
 
                         $parms = array(
