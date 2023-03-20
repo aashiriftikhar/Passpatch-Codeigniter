@@ -20,6 +20,7 @@ $mail->Subject    = $subject;
 $mail->MsgHTML($body);
 $address = $to;
 $mail->AddAddress($address, $to);
+$mail->CharSet = 'UTF-8';
 
 $mail->Send();   
 return true;
